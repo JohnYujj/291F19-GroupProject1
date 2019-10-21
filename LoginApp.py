@@ -25,7 +25,7 @@ class LoginApp(tkinter.Tk):
         #entry is a text that has get method to get the user's input
         self.entUsername = Entry(self)
         self.entUsername.grid(row = 1, column = 2)
-        self.entPassword = Entry(self)
+        self.entPassword = Entry(self,show="*")
         self.entPassword.grid(row = 2, column = 2)
         entryList = [self.entUsername, self.entPassword]
         
@@ -49,7 +49,6 @@ class LoginApp(tkinter.Tk):
             self.destroy()
             #launch next window
             winReg.mainloop()
-            
         elif utype == 'Traffic Officer':
             print(type)
             #launch window for traffic officer
