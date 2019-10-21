@@ -8,6 +8,8 @@ class RegistryAgentApp(tkinter.Tk):
         tkinter.Tk.__init__(self)
         self.title("Registry Agent Window")
         
+        #create SQL controller for this app, remember to commit it when exiting app or when next statement needed
+        self.currentUser = uid
         self.database = dbPath
         self.SQLController = SQLControlClass.SQLController(self.database)
         
@@ -20,7 +22,7 @@ class RegistryAgentApp(tkinter.Tk):
         # |Button6          |
         # |ReturnButton     |
         
-        self.lblUsername = Label(self, text=uid)
+        self.lblUsername = Label(self, text=self.currentUser)
         self.lblUsername.grid(row = 1, column = 1)
        
         #use 'command=' will run the specified function when the button is clicked
@@ -65,5 +67,5 @@ class RegistryAgentApp(tkinter.Tk):
         pass
     
     def logoutClick(self):
-        #destroy and go back to loginWindow
+        #destroy and create loginwindow
         pass

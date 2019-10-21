@@ -8,6 +8,7 @@ class LoginApp(tkinter.Tk):
         tkinter.Tk.__init__(self)
         self.title("Login Window")
         
+        #create SQL controller for this app, remember to commit it when exiting app or when next statement needed
         self.database = dbPath
         self.SQLController = SQLControlClass.SQLController(self.database)        
         
@@ -39,12 +40,16 @@ class LoginApp(tkinter.Tk):
         password = self.entPassword.get()
         utype = self.SQLController.GetUserType(username,password)
         if utype == 'Registry Agent':
-            print(utype)
+            print(utype) #debug msg
+            #call this before closing an app since each app has independent sqlcontroller
             self.SQLController.CommitAndClose()
+            #create next app to be launched
             winReg = RegistryAgentApp.RegistryAgentApp(self.database,username)
+            #close current window
             self.destroy()
+            #launch next window
             winReg.mainloop()
-            #close sql
+            
         elif utype == 'Traffic Officer':
             print(type)
             #launch window for traffic officer
