@@ -6,7 +6,6 @@ class ErrorWindowPopup(tkinter.Tk):
         tkinter.Tk.__init__(self)
         self.title("Error")
         
-        #pack will auto space them
         self.lblErr = Label(self, text=errorMsg)
         self.lblErr.grid(row = 1, column = 1)
         self.btnOk = Button(self, text="Ok", command=self.okClick)

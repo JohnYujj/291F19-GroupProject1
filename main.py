@@ -6,7 +6,6 @@ import LoginApp
 
 def main():
     database = './test.db'
-        
     winLogin = LoginApp.LoginApp(database)
     winLogin.mainloop()
     

@@ -9,7 +9,7 @@ class LoginApp(tkinter.Tk):
         tkinter.Tk.__init__(self)
         self.title("Login Window")
         
-        #create SQL controller for this app, remember to commit it when exiting app or when next statement needed
+        #create SQL controller for this app usage: SQLControlClass.SQLController(Database Path)
         self.database = dbPath
         self.SQLController = SQLControlClass.SQLController(self.database)        
         
@@ -41,21 +41,19 @@ class LoginApp(tkinter.Tk):
         password = self.entPassword.get()
         utype = self.SQLController.GetUserType(username,password)
         if utype == 'Registry Agent':
-            print(utype) #debug msg
-            #call this before closing an app since each app has independent sqlcontroller
-            self.SQLController.CommitAndClose()
-            #create next app to be launched
+            #create next app to be launched usage: RegistryAgentApp.RegistryAgentApp(Database Path, Username Input)
             winReg = RegistryAgentApp.RegistryAgentApp(self.database,username)
-            #close current window
+            
+            #close this window and launch next
+            self.SQLController.CommitAndClose()
             self.destroy()
-            #launch next window
             winReg.mainloop()
         elif utype == 'Traffic Officer':
             print(type)
             #launch window for traffic officer
             #close sql
         elif utype is None:
-            #launch error window invalid pass
+            #launch error window usage: ErrorWindowPopup.ErrorWindowPopup(<string>ErrorMsg)
             winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Invalid Username or Password")
             winErr.mainloop()
     

@@ -3,12 +3,12 @@ from tkinter import *
 import SQLControlClass
 
 class RegistryAgentApp(tkinter.Tk):
-    #should pass the uid when creating registryAgentApp
+    #should pass the uid when creating registryAgentApp to determine who is currently logged in
     def __init__(self, dbPath, uid):
         tkinter.Tk.__init__(self)
         self.title("Registry Agent Window")
         
-        #create SQL controller for this app, remember to commit it when exiting app or when next statement needed
+        #create SQL controller for this app usage: SQLControlClass.SQLController(Database Path)
         self.currentUser = uid
         self.database = dbPath
         self.SQLController = SQLControlClass.SQLController(self.database)
