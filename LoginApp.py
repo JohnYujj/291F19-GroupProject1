@@ -1,13 +1,15 @@
 import tkinter
 from tkinter import *
-import sqlite3
 import SQLControlClass
+import RegistryAgentApp
 
 class LoginApp(tkinter.Tk):
-    def __init__(self, SQL):
+    def __init__(self, dbPath):
         tkinter.Tk.__init__(self)
         self.title("Login Window")
-        self.SQLController = SQL
+        
+        self.database = dbPath
+        self.SQLController = SQLControlClass.SQLController(self.database)        
         
         #basically this is grid which is how items in gui are organized
         # |username label|username input box|
@@ -38,7 +40,10 @@ class LoginApp(tkinter.Tk):
         utype = self.SQLController.GetUserType(username,password)
         if utype == 'Registry Agent':
             print(utype)
-            #launch window for registry agent
+            self.SQLController.CommitAndClose()
+            winReg = RegistryAgentApp.RegistryAgentApp(self.database,username)
+            self.destroy()
+            winReg.mainloop()
             #close sql
         elif utype == 'Traffic Officer':
             print(type)
@@ -47,13 +52,3 @@ class LoginApp(tkinter.Tk):
     
     def exitClick(self):
         self.destroy()
-
-def main():
-    database = './test.db'
-    appSQL = SQLControlClass.SQLController(database)
-    
-    winLogin = LoginApp(appSQL)
-    winLogin.mainloop()
-    
-if __name__ == '__main__':
-    main()

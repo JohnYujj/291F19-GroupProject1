@@ -14,3 +14,7 @@ class SQLController:
         uType=user[0]
         self.connection.commit()
         return uType     
+    
+    def CommitAndClose(self):
+        self.connection.commit()	
+        self.connection.close()
