@@ -11,9 +11,13 @@ class SQLController:
     def GetUserType(self, username,password):
         self.cursor.execute('SELECT utype FROM users WHERE uid=:username AND pwd=:password',{"username":username,"password":password})
         user = self.cursor.fetchone()
-        uType=user[0]
         self.connection.commit()
-        return uType     
+        if user is None: 
+            #invalid username or password
+            return None
+        else:
+            uType=user[0]
+            return uType     
     
     def CommitAndClose(self):
         self.connection.commit()	

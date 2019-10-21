@@ -8,9 +8,9 @@ class ErrorWindowPopup(tkinter.Tk):
         
         #pack will auto space them
         self.lblErr = Label(self, text=errorMsg)
-        self.lblErr.pack()
-        self.btnOk(self, text="Ok", command=self.okClick)
-        self.btnOk.pack()
+        self.lblErr.grid(row = 1, column = 1)
+        self.btnOk = Button(self, text="Ok", command=self.okClick)
+        self.btnOk.grid(row = 2, column = 1)
         
     def okClick(self):
         self.destroy()
