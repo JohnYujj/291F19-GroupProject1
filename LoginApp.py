@@ -39,7 +39,7 @@ class LoginApp(tkinter.Tk):
         username = self.entUsername.get()
         password = self.entPassword.get()
         utype = self.SQLController.GetUserType(username,password)
-        if utype == 'Registry Agent':
+        if utype == 'a':
             #create next app to be launched usage: RegistryAgentApp.RegistryAgentApp(Database Path, Username Input)
             winReg = RegistryAgentApp.RegistryAgentApp(self.database,username)
             
@@ -47,7 +47,7 @@ class LoginApp(tkinter.Tk):
             self.SQLController.CommitAndClose()
             self.destroy()
             winReg.mainloop()
-        elif utype == 'Traffic Officer':
+        elif utype == 'o':
             print(type)
             #launch window for traffic officer
             #close sql
