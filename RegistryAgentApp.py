@@ -45,6 +45,8 @@ class RegistryAgentApp(tkinter.Tk):
         
         
     def birthRegistrationClick(self):
+        self.SQLController.CommitAndClose()
+        self.destroy()
         winBirthRegistration = BirthRegistration.BirthRegistrationApp(self.database, self.currentUser)
         winBirthRegistration.mainloop()        
     

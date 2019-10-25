@@ -2,7 +2,11 @@ import tkinter
 from tkinter import *
 import SQLControlClass
 import RegistryAgentApp
+import ErrorWindowPopup
+import CreatePerson
 import datetime
+from datetime import datetime
+import random
 
 class BirthRegistrationApp(tkinter.Tk):
     #should pass the uid when creating registryAgentApp to determine who is currently logged in
@@ -62,10 +66,10 @@ class BirthRegistrationApp(tkinter.Tk):
         self.entmlname = Entry(self, width = 20)
         self.entmlname.grid(sticky="W", row = 9, column = 2)     
         
-        self.btnExit = Button(self, text ="Cancel", command=self.CancelClick)
-        self.btnExit.grid(row = 10, column = 1)
-        self.btnLogin = Button(self, text ="Ok", command=self.OkClick)
-        self.btnLogin.grid(row = 10, column = 2)        
+        self.btnCancel = Button(self, text ="Cancel", command=self.CancelClick)
+        self.btnCancel.grid(row = 10, column = 1)
+        self.btnOk = Button(self, text ="Ok", command=self.OkClick)
+        self.btnOk.grid(row = 10, column = 2)        
         
     def OkClick(self):
         #todo: handle empty inputs
@@ -78,7 +82,7 @@ class BirthRegistrationApp(tkinter.Tk):
         ffname = self.entffname.get()
         flname = self.entflname.get()
         mfname = self.entmfname.get()
-        mlname = self.endmlname.get()
+        mlname = self.entmlname.get()
         
         #query city
         regplace = self.SQLController.QueryUserCity(self.currentUser)
@@ -93,22 +97,39 @@ class BirthRegistrationApp(tkinter.Tk):
         
         #query father and mother (check if exists), launch window to create one if not exists
         dadData = self.SQLController.QueryPersonsAll(ffname, flname)
+        
         if dadData is None:
-            #enter persons data window
-            pass
+            createDad = CreatePerson.CreatePersonApp(self.database, ffname, flname, "Father")
+            createDad.mainloop()
+            #user should have to press OK again in this window after creatingdad
+            return
+        
         momData = self.SQLController.QueryPersonsAll(mfname, mlname)
         if momData is None:
-            #enter persons data window
-            pass
-        address = momData[0] #whatever the address and phone fields are
-        phone = momData[1]
+            createMom = CreatePerson.CreatePersonApp(self.database, mfname, mlname, "Mother")
+            createMom.mainloop()
+            return
+        
+        address = momData[4] #whatever the address and phone fields are
+        phone = momData[5]
+        
         #births(regno, fname, lname, regdate, regplace, gender, f_fname, f_lname, m_fname, m_lname)
-        self.SQLController.RegisterBirth(regno, fname, lname, regdate, regplace, gender, ffname, flname, mfname, mlname)
+        self.SQLController.CreateBirth(regno, fname, lname, regdate, regplace, gender, ffname, flname, mfname, mlname)
         
         #create person if not already exists
         personData = self.SQLController.QueryPersonsAll(fname,lname)
         if personData is None:
             self.SQLController.CreatePerson(fname, lname, bdate, bplace, address, phone)
         
-    def CancelClick(self):
+        self.SQLController.CommitAndClose()
         self.destroy()
+        winErr = ErrorWindowPopup.ErrorWindowPopup("Birth Registration Success")
+        winErr.mainloop()        
+        winReg = RegistryAgentApp.RegistryAgentApp(self.database,self.currentUser)
+        winReg.mainloop()        
+        
+    def CancelClick(self):
+        self.SQLController.CommitAndClose()
+        self.destroy()
+        winReg = RegistryAgentApp.RegistryAgentApp(self.database,self.currentUser)
+        winReg.mainloop()        

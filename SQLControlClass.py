@@ -33,16 +33,22 @@ class SQLController:
             return False
         else:
             return True
-        
-        
+    
+    def CreateBirth(self, regno, fname, lname, regdate, regplace, gender, ffname, flname, mfname, mlname):
+        self.cursor.execute('INSERT INTO births VALUES(:regno ,:fname ,:lname ,:regdate ,:regplace ,:gender,:ffname,:flname,:mfname,:mlname)',{"regno":regno, "fname":fname, "lname":lname, "regdate":regdate, "regplace":regplace, "gender":gender, "ffname":ffname, "flname":flname, "mfname":mfname, "mlname":mlname})
+
     ##QUERYING PERSONS
     def QueryPersonsAll(self, first, last):
         self.cursor.execute('SELECT * FROM persons WHERE fname=:first AND lname=:last',{"first":first, "last":last})
         person = self.cursor.fetchone()
-        if result is None:
+        if person is None:
             return None
         else:
             return person
+        
+    def CreatePerson(self, fname, lname, bdate, bplace, address, phone):
+        self.cursor.execute('INSERT INTO persons VALUES(:fname ,:lname ,:bdate ,:bplace ,:address ,:phone)',{"fname":fname, "lname":lname, "bdate":bdate, "bplace":bplace, "address":address, "phone":phone})
+        self.connection.commit()
     
     def CommitAndClose(self):
         self.connection.commit()	
