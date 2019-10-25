@@ -18,17 +18,16 @@ class LoginApp(tkinter.Tk):
         # |password label|password input box|
         # |close button  |process login btn |
         
-        self.lblUsername = Label(self, text="Username: ")
-        self.lblUsername.grid(row = 1, column = 1)
-        self.lblPassword = Label(self, text="Password: ")
-        self.lblPassword.grid(row = 2, column = 1)
+        self.lblUsername = Label(self, text="Username: ", height = 1, width = 10)
+        self.lblUsername.grid(sticky="W", row = 1, column = 1)
+        self.lblPassword = Label(self, text="Password: ", height = 1, width = 10)
+        self.lblPassword.grid(sticky="W", row = 2, column = 1)
         
         #entry is a text that has get method to get the user's input
-        self.entUsername = Entry(self)
-        self.entUsername.grid(row = 1, column = 2)
-        self.entPassword = Entry(self,show="*")
-        self.entPassword.grid(row = 2, column = 2)
-        entryList = [self.entUsername, self.entPassword]
+        self.entUsername = Entry(self, width = 20)
+        self.entUsername.grid(sticky="W", row = 1, column = 2)
+        self.entPassword = Entry(self,show="*", width = 20)
+        self.entPassword.grid(sticky="W", row = 2, column = 2)
         
         #use 'command=' will run the specified function when the button is clicked
         self.btnExit = Button(self, text ="Exit", command=self.exitClick)
