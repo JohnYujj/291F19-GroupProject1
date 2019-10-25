@@ -2,6 +2,7 @@ import tkinter
 from tkinter import *
 import SQLControlClass
 import RegistryAgentApp
+import datetime
 
 class BirthRegistrationApp(tkinter.Tk):
     #should pass the uid when creating registryAgentApp to determine who is currently logged in
@@ -59,10 +60,16 @@ class BirthRegistrationApp(tkinter.Tk):
         self.entmfname = Entry(self, width = 20)
         self.entmfname.grid(sticky="W", row = 8, column = 2)     
         self.entmlname = Entry(self, width = 20)
-        self.entmlname.grid(sticky="W", row = 9, column = 2)              
+        self.entmlname.grid(sticky="W", row = 9, column = 2)     
+        
+        self.btnExit = Button(self, text ="Cancel", command=self.CancelClick)
+        self.btnExit.grid(row = 10, column = 1)
+        self.btnLogin = Button(self, text ="Ok", command=self.OkClick)
+        self.btnLogin.grid(row = 10, column = 2)        
         
     def OkClick(self):
-        #todo: handle empty
+        #todo: handle empty inputs
+        #from user entry
         fname = self.entfname.get()
         lname = self.entlname.get()
         gender = self.entgender.get()
@@ -72,20 +79,36 @@ class BirthRegistrationApp(tkinter.Tk):
         flname = self.entflname.get()
         mfname = self.entmfname.get()
         mlname = self.endmlname.get()
-        #city = get user's city SQL
-        #date = get today's date
-        #regno = create unique regno (either create one mathematically based on unique key or just random and verify its uniqueness with sql search)
-                
-        #query father and mother (check if exists), launch window to create one if not exists
-        dadData = self.SQLController.QueryParent(ffname, flname, 'father')
-        momData = self.SQLController.QueryParent(mfname, mlname, 'mother')
-        #get mother's address and phone
-        address = momData[0]
-        phone = momData[1]
         
-
-        self.SQLController.RegisterBirth(fname,lname,gender,bdate,bplace,ffname,flname,mfname,mlname,city,date,regno,address,phone)
-        pass
+        #query city
+        regplace = self.SQLController.QueryUserCity(self.currentUser)
+        
+        #get current date
+        regdate = datetime.date(datetime.now())
+        
+        #regno = create random 4 digit regno 1000-9999, then check if it is unique in db
+        regno = random.randint(1000,10000)
+        while self.SQLController.CheckUniqueBirthRegno(regno):
+            regno = random.randint(1000,10000)
+        
+        #query father and mother (check if exists), launch window to create one if not exists
+        dadData = self.SQLController.QueryPersonsAll(ffname, flname)
+        if dadData is None:
+            #enter persons data window
+            pass
+        momData = self.SQLController.QueryPersonsAll(mfname, mlname)
+        if momData is None:
+            #enter persons data window
+            pass
+        address = momData[0] #whatever the address and phone fields are
+        phone = momData[1]
+        #births(regno, fname, lname, regdate, regplace, gender, f_fname, f_lname, m_fname, m_lname)
+        self.SQLController.RegisterBirth(regno, fname, lname, regdate, regplace, gender, ffname, flname, mfname, mlname)
+        
+        #create person if not already exists
+        personData = self.SQLController.QueryPersonsAll(fname,lname)
+        if personData is None:
+            self.SQLController.CreatePerson(fname, lname, bdate, bplace, address, phone)
         
     def CancelClick(self):
         self.destroy()
