@@ -49,6 +49,37 @@ class SQLController:
     def CreatePerson(self, fname, lname, bdate, bplace, address, phone):
         self.cursor.execute('INSERT INTO persons VALUES(:fname ,:lname ,:bdate ,:bplace ,:address ,:phone)',{"fname":fname, "lname":lname, "bdate":bdate, "bplace":bplace, "address":address, "phone":phone})
         self.connection.commit()
+        
+        
+        
+        
+        
+    ##TRAFFIC OFFICER##
+    ##ISSUE TICKET APP
+    def GetReg(self, rn):
+        self.cursor.execute('SELECT fname, lname, make, model, year, color FROM registrations r, vehicles v WHERE r.vin = v.vin AND regno=:number',{"number":rn})
+        reg = self.cursor.fetchone()  
+        self.connection.commit()
+        if reg is None:
+            return None
+        else:
+            return reg 
+        
+    def CheckUniqueTicketNo(self, tno):
+        self.cursor.execute('SELECT * FROM tickets WHERE tno=:tno',{"tno":tno})
+        result = self.cursor.fetchone()
+        if result is None:
+            return False
+        else:
+            return True 
+        
+    def CreateTicket(self, tno, regno, fine, violation, vdate):
+        self.cursor.execute('INSERT INTO tickets VALUES(:tno ,:regno ,:fine ,:violation ,:vdate)',{"tno":tno, "regno":regno, "fine":fine, "violation":violation, "vdate":vdate})
+        self.connection.commit()    
+        
+        
+        
+        
     
     def CommitAndClose(self):
         self.connection.commit()	

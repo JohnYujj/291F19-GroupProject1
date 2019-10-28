@@ -3,6 +3,7 @@ from tkinter import *
 import SQLControlClass
 import RegistryAgentApp
 import ErrorWindowPopup
+import TrafficOfficerApp
 
 class LoginApp(tkinter.Tk):
     def __init__(self, dbPath):
@@ -48,9 +49,10 @@ class LoginApp(tkinter.Tk):
             self.destroy()
             winReg.mainloop()
         elif utype == 'o':
-            print(type)
-            #launch window for traffic officer
-            #close sql
+            winTraf = TrafficOfficerApp.TrafficOfficerApp(self.database,username)
+            self.SQLController.CommitAndClose()
+            self.destroy()
+            winTraf.mainloop()
         elif utype is None:
             #launch error window usage: ErrorWindowPopup.ErrorWindowPopup(<string>ErrorMsg)
             winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Invalid Username or Password")
