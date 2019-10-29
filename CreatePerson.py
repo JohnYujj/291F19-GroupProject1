@@ -20,7 +20,7 @@ class CreatePersonApp(tkinter.Tk):
         
         mainLabelText= "Enter Data For " + entity + ": " + fname + " " + lname
         self.lblMain = Label(self, text=mainLabelText, height = 1, width = 30)
-        self.lblMain.grid(sticky="W", row = 1)
+        self.lblMain.grid(sticky="W", row = 1, column = 1)
         
         
         self.lblfname = Label(self, text="First Name: ", height = 1, width = 15)

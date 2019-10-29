@@ -50,9 +50,24 @@ class SQLController:
         self.cursor.execute('INSERT INTO persons VALUES(:fname ,:lname ,:bdate ,:bplace ,:address ,:phone)',{"fname":fname, "lname":lname, "bdate":bdate, "bplace":bplace, "address":address, "phone":phone})
         self.connection.commit()
         
+    ##QUERY TICKETS
+    def GetTicketFine(self, ticketnum):
+        self.cursor.execute('SELECT fine FROM tickets WHERE tno=:ticketnum',{'ticketnum':ticketnum})
+        fine = self.cursor.fetchone()
+        return int(fine[0])    
+    
+    ##QUERY PAYMENTS
+    def GetAllPayments(self, ticketnum):
+        self.cursor.execute('SELECT amount FROM payments WHERE tno=:ticketnum',{'ticketnum':ticketnum})
+        payments = self.cursor.fetchall()
+        return payments
         
-        
-        
+    def ProcessPayment(self, ticketnum, ticketdate, ticketamount):
+        try:
+            self.cursor.execute('INSERT INTO payments VALUES(:ticketnum, :ticketdate, :ticketamount)',{'ticketnum':ticketnum, 'ticketdate':ticketdate, 'ticketamount':ticketamount})
+            self.connection.commit()
+        except:
+            return True
         
     ##TRAFFIC OFFICER##
     ##ISSUE TICKET APP
@@ -77,10 +92,6 @@ class SQLController:
         self.cursor.execute('INSERT INTO tickets VALUES(:tno ,:regno ,:fine ,:violation ,:vdate)',{"tno":tno, "regno":regno, "fine":fine, "violation":violation, "vdate":vdate})
         self.connection.commit()    
         
-        
-        
-        
-    
     def CommitAndClose(self):
         self.connection.commit()	
         self.connection.close()
