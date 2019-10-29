@@ -67,6 +67,8 @@ class SQLController:
             self.cursor.execute('INSERT INTO payments VALUES(:ticketnum, :ticketdate, :ticketamount)',{'ticketnum':ticketnum, 'ticketdate':ticketdate, 'ticketamount':ticketamount})
             self.connection.commit()
         except:
+            #Return True if error happened in sql execution
+            #sqlite3 module in python cannot return specific error, can only say some error happened and make guess on cause. 
             return True
         
     ##TRAFFIC OFFICER##

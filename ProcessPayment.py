@@ -54,24 +54,25 @@ class ProcessPaymentApp(tkinter.Tk):
         balanceAfterPayment = fine - previousPayments - amount
         maxPayment = fine - previousPayments
         
-        #if all payments + current payment > fine, show invalid msg and return no action
-        #else, process payment        
+        #if all payments + current payment > fine, show invalid msg and return no action  
         if balanceAfterPayment < 0:
             msg = "Error: Total Payments Exceed Fine. Max Payment is %d." %(maxPayment)
             winErr = ErrorWindowPopup.ErrorWindowPopup(msg)
             return
+        
+        #otherwise, process payment   
+        error = self.SQLController.ProcessPayment(tno,pdate,amount)
+        if error: 
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: SQL Error in Process Payment. Please check your Ticket Number. Maximum 1 payment per ticket per day.")
+            winErr.mainloop()
         else:
-            error = self.SQLController.ProcessPayment(tno,pdate,amount)
-            if error: 
-                winErr = ErrorWindowPopup.ErrorWindowPopup("Error: SQL Error in Process Payment. Please check your Ticket Number. Maximum 1 payment per ticket per day.")
-                winErr.mainloop()
+            self.SQLController.CommitAndClose()
             self.destroy()
             msg = "Payment Success. Remaining Balance %d." %(balanceAfterPayment)
             winErr = ErrorWindowPopup.ErrorWindowPopup(msg)
             winErr.mainloop()        
             winReg = RegistryAgentApp.RegistryAgentApp(self.database,self.currentUser)
-            winReg.mainloop()    
-            return
+            winReg.mainloop()
         
     def CancelClick(self):
         self.SQLController.CommitAndClose()
