@@ -5,7 +5,7 @@ import LoginApp
 import BirthRegistration
 import ProcessPayment
 import MarriageRegistration
-import DriverAvstract
+import DriverAbstract
 import vrenew
 
 class RegistryAgentApp(tkinter.Tk):
