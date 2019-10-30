@@ -4,6 +4,9 @@ import SQLControlClass
 import LoginApp
 import BirthRegistration
 import ProcessPayment
+import MarriageRegistration
+import DriverAvstract
+import vrenew
 
 class RegistryAgentApp(tkinter.Tk):
     #should pass the uid when creating registryAgentApp to determine who is currently logged in
@@ -58,7 +61,7 @@ class RegistryAgentApp(tkinter.Tk):
     
     def vehicleRenewClick(self):
         #launch input window and do sql
-        winvrenew = MarriageRegistration.MarriageRegistrationApp(self.database, self.currentUser)
+        winvrenew = vrenew.Vrenew(self.database, self.currentUser)
         winvrenew.mainloop()   
     
     def processBillClick(self):
