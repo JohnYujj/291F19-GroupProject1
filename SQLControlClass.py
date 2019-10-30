@@ -50,9 +50,26 @@ class SQLController:
         self.cursor.execute('INSERT INTO persons VALUES(:fname ,:lname ,:bdate ,:bplace ,:address ,:phone)',{"fname":fname, "lname":lname, "bdate":bdate, "bplace":bplace, "address":address, "phone":phone})
         self.connection.commit()
         
+    ##QUERY TICKETS
+    def GetTicketFine(self, ticketnum):
+        self.cursor.execute('SELECT fine FROM tickets WHERE tno=:ticketnum',{'ticketnum':ticketnum})
+        fine = self.cursor.fetchone()
+        return int(fine[0])    
+    
+    ##QUERY PAYMENTS
+    def GetAllPayments(self, ticketnum):
+        self.cursor.execute('SELECT amount FROM payments WHERE tno=:ticketnum',{'ticketnum':ticketnum})
+        payments = self.cursor.fetchall()
+        return payments
         
-        
-        
+    def ProcessPayment(self, ticketnum, ticketdate, ticketamount):
+        try:
+            self.cursor.execute('INSERT INTO payments VALUES(:ticketnum, :ticketdate, :ticketamount)',{'ticketnum':ticketnum, 'ticketdate':ticketdate, 'ticketamount':ticketamount})
+            self.connection.commit()
+        except:
+            #Return True if error happened in sql execution
+            #sqlite3 module in python cannot return specific error, can only say some error happened and make guess on cause. 
+            return True
         
     ##TRAFFIC OFFICER##
     ##ISSUE TICKET APP
@@ -102,7 +119,7 @@ class SQLController:
         else:
             return result
         
-    
+
     def CommitAndClose(self):
         self.connection.commit()	
         self.connection.close()

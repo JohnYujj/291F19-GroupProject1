@@ -3,6 +3,7 @@ from tkinter import *
 import SQLControlClass
 import LoginApp
 import BirthRegistration
+import ProcessPayment
 
 class RegistryAgentApp(tkinter.Tk):
     #should pass the uid when creating registryAgentApp to determine who is currently logged in
@@ -63,8 +64,10 @@ class RegistryAgentApp(tkinter.Tk):
         pass    
     
     def processPaymentClick(self):
-        #launch input window and do sql
-        pass    
+        self.SQLController.CommitAndClose()
+        self.destroy()
+        winProcessPayment = ProcessPayment.ProcessPaymentApp(self.database, self.currentUser)
+        winProcessPayment.mainloop()   
     
     def giveAbstractClick(self):
         #launch input window and do sql
