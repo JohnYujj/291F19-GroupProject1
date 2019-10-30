@@ -95,7 +95,6 @@ class SQLController:
         self.cursor.execute('INSERT INTO tickets VALUES(:tno ,:regno ,:fine ,:violation ,:vdate)',{"tno":tno, "regno":regno, "fine":fine, "violation":violation, "vdate":vdate})
         self.connection.commit()    
     
-    
     ##FIND CAR OWNER
     def FindCarOwner(self,make,model,year,color,plate):
         criteriaLst=[]
@@ -118,7 +117,27 @@ class SQLController:
             return False
         else:
             return result
-        
+    
+    def Abstract(self,fname,lname):
+        self.cursor.execute('select count(t1.tno), count(d1.ddate), sum(d1.points),count(t2.tno), count(d2.ddate), sum(d2.points) from tickets t1, tickets t2, registrations r1, registrations r2, demeritNotices d1, demeritNotices d2 where d1.fname = :fname and d1.lname = :lname and r1.fname = :fname and r1.lname = :lname and r1.regno = t1.regno and d2.fname = :fname and d2.lname = :lname and r2.fname = :fname and r2.lname = :lname and r2.regno = t2.regno and t2.vdate > date("now", "-2 years") and d2.ddate > date("now", "-2 years")',{"fname":fname,"lname":lname})
+        return self.cursor.fetchall()
+    
+    def TicketView(self,fname,lname):
+        self.cursor.execute('select tno, vdate, violation, fine, t.regno, make, model from tickets t, registrations r, vehicles v where r.regno = t.regno and r.vin = v.vin and r.fname = :fname and r.lname = :lname order by vdate desc',{"fname":fname,"lname":lname})
+        return self.cursor.fetchall()
+    
+    def MarriageReg(self,regno,regdate,regplace,fname1,lname1,fname2,lname2):
+        self.cursor.execute('INSERT INTO marriages VALUES(:regno,:regdate,:regplace,:fname1,:lname1,:fname2,:lname2',{'regno':regno,'regdate':regdate,'regplace':regplace,'fname1':fname1,'lname1':lname1,'fname2':fname2,'lanem2':lname2})
+        self.connection.commit()
+    
+    def CheckUniqueMarriageRegno(self,regno):
+        self.cursor.execute('SELECT * FROM marriages WHERE regno=:regno',{"regno":regno})
+        result = self.cursor.fetchone()
+        if result is None:
+            #if nothing found, the regno is unique and does not exist yet
+            return False
+        else:
+            return True
 
     def CommitAndClose(self):
         self.connection.commit()	
