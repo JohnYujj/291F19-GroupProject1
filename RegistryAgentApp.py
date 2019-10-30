@@ -33,7 +33,7 @@ class RegistryAgentApp(tkinter.Tk):
         self.btn1.grid(sticky="W", row = 2, column = 1)
         self.btn2 = Button(self, text ="Register Marriage", command=self.marriageRegistrationClick, height = 1, width = 20, anchor="w")
         self.btn2.grid(sticky="W", row = 3, column = 1)
-        self.btn3 = Button(self, text ="Renew Vehicle Registration", command=self.vehicleRegistrationClick, height = 1, width = 20, anchor="w")
+        self.btn3 = Button(self, text ="Renew Vehicle Registration", command=self.vehicleRenewClick, height = 1, width = 20, anchor="w")
         self.btn3.grid(sticky="W", row = 4, column = 1)
         self.btn4 = Button(self, text ="Process Bill of Sale", command=self.processBillClick, height = 1, width = 20, anchor="w")
         self.btn4.grid(sticky="W", row = 5, column = 1)
@@ -53,11 +53,13 @@ class RegistryAgentApp(tkinter.Tk):
     
     def marriageRegistrationClick(self):
         #launch input window and do sql
-        pass    
+        winMarriageRegistration = MarriageRegistration.MarriageRegistrationApp(self.database, self.currentUser)
+        winMarriageRegistration.mainloop()    
     
-    def vehicleRegistrationClick(self):
+    def vehicleRenewClick(self):
         #launch input window and do sql
-        pass    
+        winvrenew = MarriageRegistration.MarriageRegistrationApp(self.database, self.currentUser)
+        winvrenew.mainloop()   
     
     def processBillClick(self):
         #launch input window and do sql
@@ -71,7 +73,8 @@ class RegistryAgentApp(tkinter.Tk):
     
     def giveAbstractClick(self):
         #launch input window and do sql
-        pass
+        winDA = DriverAbstract.DA(self.database, self.currentUser)
+        winDA.mainloop()
     
     def logoutClick(self):
         #destroy and create loginwindow
