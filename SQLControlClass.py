@@ -68,6 +68,7 @@ class SQLController:
     def CheckUniqueTicketNo(self, tno):
         self.cursor.execute('SELECT * FROM tickets WHERE tno=:tno',{"tno":tno})
         result = self.cursor.fetchone()
+        self.connection.commit()
         if result is None:
             return False
         else:
@@ -76,9 +77,30 @@ class SQLController:
     def CreateTicket(self, tno, regno, fine, violation, vdate):
         self.cursor.execute('INSERT INTO tickets VALUES(:tno ,:regno ,:fine ,:violation ,:vdate)',{"tno":tno, "regno":regno, "fine":fine, "violation":violation, "vdate":vdate})
         self.connection.commit()    
+    
+    
+    ##FIND CAR OWNER
+    def FindCarOwner(self,make,model,year,color,plate):
+        criteriaLst=[]
+        if len(make)!=0:
+            criteriaLst.append('make LIKE '+"'%"+str(make)+"%'")
+        if len(model)!=0:
+            criteriaLst.append('model LIKE '+"'%"+str(model)+"%'")
+        if len(year)!=0:
+            criteriaLst.append('year LIKE '+"'%"+str(year)+"%'")
+        if len(color)!=0:
+            criteriaLst.append('color LIKE '+"'%"+str(color)+"%'")
+        if len(plate)!=0:
+            criteriaLst.append('plate LIKE '+"'%"+str(plate)+"%'")
+        criteriaStr = ' AND '.join(criteriaLst)
         
-        
-        
+        self.cursor.execute('SELECT make, model, year, color, plate, MAX(regdate), expiry, fname, lname FROM registrations r, vehicles v WHERE r.vin=v.vin AND ' + criteriaStr + ' GROUP BY r.vin')
+        result = self.cursor.fetchall()
+        self.connection.commit()
+        if result is None:
+            return False
+        else:
+            return result
         
     
     def CommitAndClose(self):

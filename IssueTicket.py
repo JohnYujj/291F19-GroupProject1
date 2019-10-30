@@ -1,3 +1,9 @@
+# IssueTicketApp
+# This application displays a window that allows the user to input a registration
+# number, click the find button, and the results will show in the box.
+# After a registration number is found, the user can issue a ticket by
+# filling out the optional violation date, violation text and fine amount.
+
 import tkinter
 from tkinter import *
 import SQLControlClass
@@ -6,7 +12,6 @@ import ErrorWindowPopup
 import datetime
 from datetime import datetime
 import random
-
 
 class IssueTicketApp(tkinter.Tk):
     def __init__(self, dbPath, uid):
@@ -24,7 +29,7 @@ class IssueTicketApp(tkinter.Tk):
         self.bottomFrame = Frame(self)
         self.bottomFrame.grid(row=2)
         
-        #topFrame - userID and enter registration number
+        #topFrame - userID, registration number entry and find button
         self.lblUsername = Label(self.topFrame, text=self.currentUser, height = 1, width = 20, anchor="w")
         self.lblUsername.grid(sticky="W", row = 0)       
         self.enterRegLabel = Label(self.topFrame,text="Enter a Registration Number")
@@ -34,7 +39,7 @@ class IssueTicketApp(tkinter.Tk):
         self.enterRegBtn = Button(self.topFrame, text="Find", command=self.findRegClick) 
         self.enterRegBtn.grid(row=1,column=2)
         
-        #midFrame - displays the make, model, year, and color
+        #midFrame - displays the make, model, year, and color as a box
         ##HEADERS
         self.nameHeader = Label(self.midFrame,text="Name",relief="groove")
         self.nameHeader.grid(row=0,column=0,ipadx=25)        
@@ -79,12 +84,15 @@ class IssueTicketApp(tkinter.Tk):
         
         
     def findRegClick(self):
+        #Command for the find button
         regNo = self.enterRegEntry.get()
         regData = self.SQLController.GetReg(regNo)
         if len(regNo) == 0:
+            #Checks if the user entered a registration number
             winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Please enter a registration number")
             winErr.mainloop()               
         elif regData is None:
+            #if registration number is not found
             winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Registration Number not found")
             winErr.mainloop()             
         else:
@@ -92,6 +100,7 @@ class IssueTicketApp(tkinter.Tk):
             
             
     def showData(self,data):
+        #Displays the data in the box
         self.name.config(text=data[0]+' '+data[1])
         self.make.config(text=data[2])
         self.model.config(text=data[3])
@@ -100,6 +109,7 @@ class IssueTicketApp(tkinter.Tk):
         
         
     def issueClick(self):
+        #Command for issue ticket button
         regNo = self.enterRegEntry.get()
         vDate = self.vDateEntry.get()
         text = self.vTextEntry.get()
@@ -127,6 +137,7 @@ class IssueTicketApp(tkinter.Tk):
             
         
     def backToMenu(self):
+        #Command for back button. Returns user to main traffic officer menu
         trafficOfficerMenu = TrafficOfficerApp.TrafficOfficerApp(self.database,self.currentUser)
         self.SQLController.CommitAndClose()
         self.destroy()          
@@ -135,7 +146,7 @@ class IssueTicketApp(tkinter.Tk):
         
 
 
-###TEST######
+####TEST REMOVE AFTER TESTED######
 #def main():
     #database = './test.db'
     #isTi = IssueTicketApp(database, 'issueticket')
