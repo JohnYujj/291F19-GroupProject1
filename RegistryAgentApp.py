@@ -6,8 +6,8 @@ import BirthRegistration
 import ProcessPayment
 import ProcessBillofSale
 import MarriageRegistration
-import DriverAbstract
-import vrenew
+#import DriverAbstract
+#import vrenew
 
 
 class RegistryAgentApp(tkinter.Tk):
@@ -63,8 +63,9 @@ class RegistryAgentApp(tkinter.Tk):
     
     def vehicleRenewClick(self):
         #launch input window and do sql
-        winvrenew = vrenew.Vrenew(self.database, self.currentUser)
-        winvrenew.mainloop()   
+        #winvrenew = vrenew.Vrenew(self.database, self.currentUser)
+        #winvrenew.mainloop() 
+        pass
     
     def processBillClick(self):
         self.SQLController.CommitAndClose()
@@ -75,13 +76,14 @@ class RegistryAgentApp(tkinter.Tk):
     def processPaymentClick(self):
         self.SQLController.CommitAndClose()
         self.destroy()
-        winProcessPayment = ProcessPayment.ProcessBillofSale(self.database, self.currentUser)
+        winProcessPayment = ProcessPayment.ProcessProcess(self.database, self.currentUser)
         winProcessPayment.mainloop()   
     
     def giveAbstractClick(self):
         #launch input window and do sql
-        winDA = DriverAbstract.DA(self.database, self.currentUser)
-        winDA.mainloop()
+        #winDA = DriverAbstract.DA(self.database, self.currentUser)
+        #winDA.mainloop()
+        pass
     
     def logoutClick(self):
         #destroy and create loginwindow
