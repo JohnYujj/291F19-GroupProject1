@@ -114,12 +114,20 @@ class BirthRegistrationApp(tkinter.Tk):
         phone = momData[5]
         
         #births(regno, fname, lname, regdate, regplace, gender, f_fname, f_lname, m_fname, m_lname)
-        self.SQLController.CreateBirth(regno, fname, lname, regdate, regplace, gender, ffname, flname, mfname, mlname)
+        birthErr = self.SQLController.CreateBirth(regno, fname, lname, regdate, regplace, gender, ffname, flname, mfname, mlname)
+        if birthErr:
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: SQL Error in Creating Birth. Please check your inputs are of valid types and do not violate unique ID.")
+            winErr.mainloop()
+            return
         
         #create person if not already exists
         personData = self.SQLController.QueryPersonsAll(fname,lname)
         if personData is None:
-            self.SQLController.CreatePerson(fname, lname, bdate, bplace, address, phone)
+            createPersonErr = self.SQLController.CreatePerson(fname, lname, bdate, bplace, address, phone)
+            if createPersonErr: 
+                winErr = ErrorWindowPopup.ErrorWindowPopup("Error: SQL Error in Creating Person. Please ensure that at least First and Last name are filled and unique.")
+                winErr.mainloop()
+                return
         
         self.SQLController.CommitAndClose()
         self.destroy()

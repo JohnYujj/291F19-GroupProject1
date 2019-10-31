@@ -68,6 +68,11 @@ class CreatePersonApp(tkinter.Tk):
         address = self.entAddress.get()
         phone = self.entPhone.get()
         
-        self.SQLController.CreatePerson(fname,lname,bdate,bplace,address,phone)
+        createPersonErr = self.SQLController.CreatePerson(fname,lname,bdate,bplace,address,phone)
+        if createPersonErr: 
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: SQL Error in Creating Person. Please ensure that at least First and Last name are filled and unique.")
+            winErr.mainloop()
+            return
+        
         self.SQLController.CommitAndClose()
         self.destroy()
