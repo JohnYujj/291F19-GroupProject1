@@ -6,7 +6,7 @@ import BirthRegistration
 import ProcessPayment
 import MarriageRegistration
 import ProcessBillofSale
-#import DriverAbstract
+import DriverAbstract
 import vrenew
 
 class RegistryAgentApp(tkinter.Tk):
@@ -84,9 +84,10 @@ class RegistryAgentApp(tkinter.Tk):
     
     def giveAbstractClick(self):
         #launch input window and do sql
-        #winDA = DriverAbstract.DA(self.database, self.currentUser)
-        #winDA.mainloop()
-        pass
+        self.SQLController.CommitAndClose()
+        self.destroy()
+        winDA = DriverAbstract.DA(self.database, self.currentUser)
+        winDA.mainloop()
     
     def logoutClick(self):
         #destroy and create loginwindow
