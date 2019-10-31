@@ -63,8 +63,8 @@ class ProcessBillofSale(tkinter.Tk):
         self.nLnameEntry = Entry(self.bottomFrame)
         self.nLnameEntry.grid(row=5,column=3)        
     
-        self.backBtn = Button(self.bottomFrame, text="Back",command = self.backToMenu)
-        self.backBtn.grid(row=6,column=0)
+        self.cancelBtn = Button(self.bottomFrame, text="Cancel",command = self.backToMenu)
+        self.cancelBtn.grid(row=6,column=0)
         self.processBtn = Button(self.bottomFrame, text="Process",command=self.processClick) 
         self.processBtn.grid(row=6,column=1)      
         

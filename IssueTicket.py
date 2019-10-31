@@ -79,8 +79,8 @@ class IssueTicketApp(tkinter.Tk):
         
         self.issueBtn = Button(self.bottomFrame, text="Issue Ticket",command = self.issueClick) 
         self.issueBtn.grid(row=3,column=1)        
-        self.backBtn = Button(self.bottomFrame, text="Back",command = self.backToMenu)
-        self.backBtn.grid(row=3, column=0)
+        self.cancelBtn = Button(self.bottomFrame, text="Cancel",command = self.backToMenu)
+        self.cancelBtn.grid(row=3, column=0)
         
         
     def findRegClick(self):

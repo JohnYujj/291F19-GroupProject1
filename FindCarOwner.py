@@ -57,8 +57,8 @@ class FindCarOwnerApp(tkinter.Tk):
                  
         self.findOwnerBtn = Button(self.bottomFrame, text="Find Owner",command=self.findOwnerClick) 
         self.findOwnerBtn.grid(row=5,column=1)        
-        self.backBtn = Button(self.bottomFrame, text="Back",command = self.backToMenu)
-        self.backBtn.grid(row=5, column=0)
+        self.cancelBtn = Button(self.bottomFrame, text="Cancel",command = self.backToMenu)
+        self.cancelBtn.grid(row=5, column=0)
         
     
     def findOwnerClick(self):
