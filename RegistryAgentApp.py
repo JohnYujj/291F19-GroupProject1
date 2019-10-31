@@ -7,7 +7,7 @@ import ProcessPayment
 import MarriageRegistration
 import ProcessBillofSale
 #import DriverAbstract
-#import vrenew
+import vrenew
 
 class RegistryAgentApp(tkinter.Tk):
     #should pass the uid when creating registryAgentApp to determine who is currently logged in
@@ -64,10 +64,10 @@ class RegistryAgentApp(tkinter.Tk):
     
     def vehicleRenewClick(self):
         #launch input window and do sql
-        #winvrenew = vrenew.Vrenew(self.database, self.currentUser)
-        #winvrenew.mainloop() 
-        #winvrenew.mainloop()   
-        pass
+        self.SQLController.CommitAndClose()
+        self.destroy()
+        winvrenew = vrenew.Vrenew(self.database, self.currentUser)
+        winvrenew.mainloop()
     
     def processBillClick(self):
         #launch input window and do sql
