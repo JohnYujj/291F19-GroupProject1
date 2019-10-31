@@ -70,7 +70,7 @@ class CreatePersonApp(tkinter.Tk):
         
         createPersonErr = self.SQLController.CreatePerson(fname,lname,bdate,bplace,address,phone)
         if createPersonErr: 
-            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: SQL Error in Creating Person. Please ensure that at least First and Last name are filled and unique.")
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: SQL Error in Creating Person. Please ensure that at First Name and Last Name are and unique.")
             winErr.mainloop()
             return
         

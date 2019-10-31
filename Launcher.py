@@ -1,11 +1,15 @@
 import tkinter
 from tkinter import *
-import SQLControlClass
 import LoginApp
+import sys
 
 
 def main():
-    database = './test.db'
+    if len(sys.argv) == 1:
+        #test database
+        database = './test.db'
+    else:
+        database = str(sys.argv[1])
     winLogin = LoginApp.LoginApp(database)
     winLogin.mainloop()
     

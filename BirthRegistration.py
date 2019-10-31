@@ -75,7 +75,15 @@ class BirthRegistrationApp(tkinter.Tk):
         #todo: handle empty inputs
         #from user entry
         fname = self.entfname.get()
+        if fname is None:
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: First Name must not be empty")
+            winErr.mainloop()
+            return
         lname = self.entlname.get()
+        if lname is None:
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Last Name must not be empty")
+            winErr.mainloop()
+            return        
         gender = self.entgender.get()
         bdate = self.entbdate.get()
         bplace = self.entbplace.get()
@@ -125,7 +133,7 @@ class BirthRegistrationApp(tkinter.Tk):
         if personData is None:
             createPersonErr = self.SQLController.CreatePerson(fname, lname, bdate, bplace, address, phone)
             if createPersonErr: 
-                winErr = ErrorWindowPopup.ErrorWindowPopup("Error: SQL Error in Creating Person. Please ensure that at least First and Last name are filled and unique.")
+                winErr = ErrorWindowPopup.ErrorWindowPopup("Error: SQL Error in Creating Person. Please ensure that at First Name and Last Name are and unique.")
                 winErr.mainloop()
                 return
         
