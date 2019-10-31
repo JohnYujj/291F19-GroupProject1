@@ -9,6 +9,7 @@ import tkinter
 from tkinter import *
 import SQLControlClass
 import RegistryAgentApp
+import ErrorWindowPopup
 import datetime
 from datetime import datetime
 import random

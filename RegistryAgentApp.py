@@ -6,7 +6,7 @@ import BirthRegistration
 import ProcessPayment
 import MarriageRegistration
 #import DriverAbstract
-#import vrenew
+import vrenew
 
 class RegistryAgentApp(tkinter.Tk):
     #should pass the uid when creating registryAgentApp to determine who is currently logged in
