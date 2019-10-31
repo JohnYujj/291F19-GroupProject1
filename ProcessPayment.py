@@ -39,14 +39,25 @@ class ProcessPaymentApp(tkinter.Tk):
         #TODO: handle empty inputs
         #from user entry
         tno = self.enttno.get()
+        if tno is None:
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Ticket Number must not be Empty")
+            winErr.mainloop()
+            return
         amount = int(self.entamt.get())
+        if amount is None:
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Payment Amount must not be Empty")
+            winErr.mainloop()
+            return     
         
         #todays date
         pdate = datetime.date(datetime.now())
         
         #get ticket fine and all payments
-
         fine = self.SQLController.GetTicketFine(tno)
+        if fine is None:
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Fine not Found. Verify ticket number.")
+            winErr.mainloop()
+            return     
         payments = self.SQLController.GetAllPayments(tno)
         previousPayments = 0
         for payment in payments:
@@ -63,7 +74,7 @@ class ProcessPaymentApp(tkinter.Tk):
         #otherwise, process payment   
         error = self.SQLController.ProcessPayment(tno,pdate,amount)
         if error: 
-            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: SQL Error in Process Payment. Please check your Ticket Number. Maximum 1 payment per ticket per day.")
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: SQL Error in Process Payment. Please check your Ticket Number. Ticket Number and Date are the Unique ID (Maximum 1 payment per ticket per day).")
             winErr.mainloop()
         else:
             self.SQLController.CommitAndClose()
