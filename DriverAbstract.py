@@ -87,19 +87,7 @@ class TicketView(tkinter.Tk):
         tkinter.Tk.__init__(self)
         self.title("ticket info")
         self.n = 0
-        if len(ticket) > 5:
-            self.btnExit = Button(self, text ="exit", command=self.exitClick)
-            self.btnExit.grid(row = 7, column = 1)
-            self.btnP = Button(self, text ="exit", command=self.preClick)
-            self.btnP.grid(row = 15, column = 3)
-            self.btnN = Button(self, text ="Next", command=self.nextClick)
-            self.btnN.grid(row = 15, column = 4)
-        else:
-            self.btnExit = Button(self, text ="exit", command=self.exitClick)
-            self.btnExit.grid(row = len(ticket)+2, column = 1)
-    
-    def show(self):
-        # display result
+        
         self.tno = Label(self,text = 'ticket number',height = 1, width = 15)
         self.tno.grid(sticky='w',row = 1, column = 1)
         self.ddate = Label(self,text = 'violation date',height = 1, width = 15)
@@ -115,6 +103,19 @@ class TicketView(tkinter.Tk):
         self.points = Label(self,text = 'car model',height = 1, width = 15)
         self.points.grid(sticky='w',row = 1, column = 7)
         
+        if len(ticket) > 5:
+            self.btnExit = Button(self, text ="exit", command=self.exitClick)
+            self.btnExit.grid(row = 7, column = 1)
+            self.btnP = Button(self, text ="exit", command=self.preClick)
+            self.btnP.grid(row = 15, column = 3)
+            self.btnN = Button(self, text ="Next", command=self.nextClick)
+            self.btnN.grid(row = 15, column = 4)
+        else:
+            self.btnExit = Button(self, text ="exit", command=self.exitClick)
+            self.btnExit.grid(row = len(ticket)+2, column = 1)
+    
+    def show(self):
+        # display result
         for i in range(5):
             if (self.n*5+i) < len(ticket):
                 self.t = Label(self,text = str(ticket[self.n*5+i][0]),height = 1, width = 15)
