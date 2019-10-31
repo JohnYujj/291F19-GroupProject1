@@ -6,7 +6,7 @@ import sys
 
 def main():
     if len(sys.argv) == 1:
-        #test database
+        #test database if no args
         database = './test.db'
     else:
         database = str(sys.argv[1])
