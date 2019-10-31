@@ -39,12 +39,12 @@ class ProcessPaymentApp(tkinter.Tk):
         #TODO: handle empty inputs
         #from user entry
         tno = self.enttno.get()
-        if tno is None:
+        if len(tno) == 0:
             winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Ticket Number must not be Empty")
             winErr.mainloop()
             return
         amount = int(self.entamt.get())
-        if amount is None:
+        if len(amount) == 0:
             winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Payment Amount must not be Empty")
             winErr.mainloop()
             return     

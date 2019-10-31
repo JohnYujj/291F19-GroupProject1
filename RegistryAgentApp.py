@@ -4,11 +4,10 @@ import SQLControlClass
 import LoginApp
 import BirthRegistration
 import ProcessPayment
-import ProcessBillofSale
 import MarriageRegistration
 #import DriverAbstract
 #import vrenew
-
+import vrenew
 
 class RegistryAgentApp(tkinter.Tk):
     #should pass the uid when creating registryAgentApp to determine who is currently logged in
@@ -65,18 +64,17 @@ class RegistryAgentApp(tkinter.Tk):
         #launch input window and do sql
         #winvrenew = vrenew.Vrenew(self.database, self.currentUser)
         #winvrenew.mainloop() 
+        #winvrenew.mainloop()   
         pass
     
     def processBillClick(self):
-        self.SQLController.CommitAndClose()
-        self.destroy()
-        winProcessBoS = ProcessBillofSale.ProcessBillofSale(self.database, self.currentUser)
-        winProcessBoS.mainloop()      
+        #launch input window and do sql
+        pass    
     
     def processPaymentClick(self):
         self.SQLController.CommitAndClose()
         self.destroy()
-        winProcessPayment = ProcessPayment.ProcessProcess(self.database, self.currentUser)
+        winProcessPayment = ProcessPayment.ProcessPaymentApp(self.database, self.currentUser)
         winProcessPayment.mainloop()   
     
     def giveAbstractClick(self):
