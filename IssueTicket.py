@@ -86,7 +86,7 @@ class IssueTicketApp(tkinter.Tk):
     def findRegClick(self):
         #Command for the find button
         regNo = self.enterRegEntry.get()
-        regData = self.SQLController.GetReg(regNo)
+        regData = self.SQLController.FindRegVehicle(regNo)
         if len(regNo) == 0:
             #Checks if the user entered a registration number
             winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Please enter a registration number")
@@ -126,14 +126,18 @@ class IssueTicketApp(tkinter.Tk):
             winErr.mainloop()
         else:
             #Creates ticket and clears fields
-            self.SQLController.CreateTicket(ticketNo, regNo, fineAmt, text, vDate)
-            self.enterRegEntry.delete(0,'end')
-            self.vDateEntry.delete(0,'end')
-            self.vTextEntry.delete(0,'end')
-            self.fineAmtEntry.delete(0,'end')
-            self.showData(['','','','','',''])
-            successMsg = ErrorWindowPopup.ErrorWindowPopup("Successfully issued ticket")
-            successMsg.mainloop()
+            ticketError = self.SQLController.CreateTicket(ticketNo, regNo, fineAmt, text, vDate)
+            if ticketError == True:
+                winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Could not insert ticket, try again.")
+                winErr.mainloop()
+            else:
+                self.enterRegEntry.delete(0,'end')
+                self.vDateEntry.delete(0,'end')
+                self.vTextEntry.delete(0,'end')
+                self.fineAmtEntry.delete(0,'end')
+                self.showData(['','','','','',''])
+                successMsg = ErrorWindowPopup.ErrorWindowPopup("Successfully issued ticket")
+                successMsg.mainloop()
             
         
     def backToMenu(self):

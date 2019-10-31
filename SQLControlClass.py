@@ -71,9 +71,49 @@ class SQLController:
             #sqlite3 module in python cannot return specific error, can only say some error happened and make guess on cause. 
             return True
         
+    ###PROCESS BILL OF SALE
+    def CheckUniqueRegNo(self, regno):
+        self.cursor.execute('SELECT * FROM registrations WHERE regno=:regno',{"regno":regno})
+        result = self.cursor.fetchone()
+        self.connection.commit()
+        if result is None:
+            return False
+        else:
+            return True    
+    
+    def GetCurOwner(self, vin, plate):        
+        self.cursor.execute('SELECT fname,lname FROM registrations WHERE vin=:vin AND plate=:plate COLLATE NOCASE GROUP BY regno HAVING MAX(regdate)',{'vin':vin,'plate':plate})
+        result = self.cursor.fetchall()
+        self.connection.commit()
+        if len(result)==0:
+            return None
+        else:
+            return result   
+        
+    def NewVehicleReg(self,regno,regdate,plate,vin,fname,lname):
+        self.cursor.execute("SELECT date('now','+1 years')")
+        self.connection.commit()
+        result = self.cursor.fetchone()
+        expiry = result[0]
+        
+        try:
+            self.cursor.execute('INSERT INTO registrations VALUES(:regno, :regdate, :expiry, :plate, :vin, :fname, :lname)',{"regno":regno, "regdate":regdate, "expiry":expiry, "plate":plate, "vin":vin, "fname":fname, "lname":lname})
+            self.connection.commit()
+        except:
+            return True
+
+    
+    def UpdateExpiry(self,fname, lname, vin, plate, expiry):
+        try:
+            self.cursor.execute('UPDATE registrations SET expiry=:expiry WHERE fname LIKE %:fname% AND lname LIKE %:lname% AND vin=:vin AND plate LIKE %:plate%',{'expiry':expiry,'fname':fname,'lname':lname,'vin':vin,'plate':plate})
+            self.connection.commit()
+        except:
+            return True   
+        
+        
     ##TRAFFIC OFFICER##
     ##ISSUE TICKET APP
-    def GetReg(self, rn):
+    def FindRegVehicle(self, rn):
         self.cursor.execute('SELECT fname, lname, make, model, year, color FROM registrations r, vehicles v WHERE r.vin = v.vin AND regno=:number',{"number":rn})
         reg = self.cursor.fetchone()  
         self.connection.commit()
@@ -92,23 +132,26 @@ class SQLController:
             return True 
         
     def CreateTicket(self, tno, regno, fine, violation, vdate):
-        self.cursor.execute('INSERT INTO tickets VALUES(:tno ,:regno ,:fine ,:violation ,:vdate)',{"tno":tno, "regno":regno, "fine":fine, "violation":violation, "vdate":vdate})
-        self.connection.commit()    
-    
+        try:
+            self.cursor.execute('INSERT INTO tickets VALUES(:tno ,:regno ,:fine ,:violation ,:vdate)',{"tno":tno, "regno":regno, "fine":fine, "violation":violation, "vdate":vdate})
+            self.connection.commit()
+        except:
+            return True
+        
     
     ##FIND CAR OWNER
     def FindCarOwner(self,make,model,year,color,plate):
         criteriaLst=[]
         if len(make)!=0:
-            criteriaLst.append('make LIKE '+"'%"+str(make)+"%'")
+            criteriaLst.append('make='+"'"+str(make)+"'")
         if len(model)!=0:
-            criteriaLst.append('model LIKE '+"'%"+str(model)+"%'")
+            criteriaLst.append('model='+"'"+str(model)+"'")
         if len(year)!=0:
-            criteriaLst.append('year LIKE '+"'%"+str(year)+"%'")
+            criteriaLst.append('year='+"'"+str(year)+"'")
         if len(color)!=0:
-            criteriaLst.append('color LIKE '+"'%"+str(color)+"%'")
+            criteriaLst.append('color='+"'"+str(color)+"'")
         if len(plate)!=0:
-            criteriaLst.append('plate LIKE '+"'%"+str(plate)+"%'")
+            criteriaLst.append('plate='+"'"+str(plate)+"'")
         criteriaStr = ' AND '.join(criteriaLst)
         
         self.cursor.execute('SELECT make, model, year, color, plate, MAX(regdate), expiry, fname, lname FROM registrations r, vehicles v WHERE r.vin=v.vin AND ' + criteriaStr + ' GROUP BY r.vin')
