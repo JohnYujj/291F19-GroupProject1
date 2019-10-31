@@ -75,12 +75,12 @@ class BirthRegistrationApp(tkinter.Tk):
         #todo: handle empty inputs
         #from user entry
         fname = self.entfname.get()
-        if fname is None:
+        if len(fname) == 0:
             winErr = ErrorWindowPopup.ErrorWindowPopup("Error: First Name must not be empty")
             winErr.mainloop()
             return
         lname = self.entlname.get()
-        if lname is None:
+        if len(lname) == 0:
             winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Last Name must not be empty")
             winErr.mainloop()
             return        
