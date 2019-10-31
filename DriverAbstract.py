@@ -119,19 +119,19 @@ class TicketView(tkinter.Tk):
         for i in range(5):
             if (self.n*5+i) < len(ticket):
                 self.t = Label(self,text = str(ticket[self.n*5+i][0]),height = 1, width = 15)
-                self.t.grid(sticky='w',row = i, column = 1)
+                self.t.grid(sticky='w',row = i+2, column = 1)
                 self.t = Label(self,text = str(ticket[self.n*5+i][1]),height = 1, width = 15)
-                self.t.grid(sticky='w',row = i, column = 2)
+                self.t.grid(sticky='w',row = i+2, column = 2)
                 self.t = Label(self,text = str(ticket[self.n*5+i][2]),height = 1, width = 15)
-                self.t.grid(sticky='w',row = i, column = 3)
+                self.t.grid(sticky='w',row = i+2, column = 3)
                 self.t = Label(self,text = str(ticket[self.n*5+i][3]),height = 1, width = 15)
-                self.t.grid(sticky='w',row = i, column = 4)
+                self.t.grid(sticky='w',row = i+2, column = 4)
                 self.t = Label(self,text = str(ticket[self.n*5+i][4]),height = 1, width = 15)
-                self.t.grid(sticky='w',row = i, column = 5)
+                self.t.grid(sticky='w',row = i+2, column = 5)
                 self.t = Label(self,text = str(ticket[self.n*5+i][5]),height = 1, width = 15)
-                self.t.grid(sticky='w',row = i, column = 6)
+                self.t.grid(sticky='w',row = i+2, column = 6)
                 self.t = Label(self,text = str(ticket[self.n*5+i][6]),height = 1, width = 15)
-                self.t.grid(sticky='w',row = i, column = 7)
+                self.t.grid(sticky='w',row = i+2, column = 7)
     
     def preClick(self):
         self.n = self.n-1
