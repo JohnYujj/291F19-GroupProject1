@@ -170,8 +170,16 @@ class SQLController:
         else:
             return result
     
-    def Abstract(self,fname,lname):
-        self.cursor.execute('select count(t1.tno), count(d1.ddate), sum(d1.points),count(t2.tno), count(d2.ddate), sum(d2.points) from tickets t1, tickets t2, registrations r1, registrations r2, demeritNotices d1, demeritNotices d2 where d1.fname = :fname and d1.lname = :lname and r1.fname = :fname and r1.lname = :lname and r1.regno = t1.regno and d2.fname = :fname and d2.lname = :lname and r2.fname = :fname and r2.lname = :lname and r2.regno = t2.regno and t2.vdate > date("now", "-2 years") and d2.ddate > date("now", "-2 years")',{"fname":fname,"lname":lname})
+    def AbstractLife(self,fname,lname):
+        self.cursor.execute('select count(ddate), sum(points) from demeritNotices where fname = :fname and lname = :lname',{'fname':fname,'lname':lname})
+        return self.cursor.fetchall()
+    
+    def AbstractYear(self,fname,lname):
+        self.cursor.execute('select count(ddate), sum(points) from demeritNotices where fname = :fname and lname = :lname and ddate > date("now", "-2 years")',{'fname':fname,'lname':lname})
+        return self.cursor.fetchall()
+        
+    def TAbstract(self,fname,lname):
+        self.cursor.execute('select count(t1.tno),count(t2.tno) from tickets t1, tickets t2 where t1.regno in (select regno from registrations where fname = :fname and lname = :lname) and t2.regno in (select regno from registrations where fname = :fname and lname = :lname) and t2.vdate > date("now", "-2 years")',{'fname':fname,'lname':lname})
         return self.cursor.fetchall()
     
     def TicketView(self,fname,lname):
