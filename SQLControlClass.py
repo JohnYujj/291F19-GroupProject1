@@ -60,7 +60,7 @@ class SQLController:
     def GetTicketFine(self, ticketnum):
         self.cursor.execute('SELECT fine FROM tickets WHERE tno=:ticketnum',{'ticketnum':ticketnum})
         fine = self.cursor.fetchone()
-        return int(fine[0])    
+        return fine 
     
     ##QUERY PAYMENTS
     def GetAllPayments(self, ticketnum):
