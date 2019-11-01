@@ -63,9 +63,9 @@ class DA(tkinter.Tk):
         self.ddate1 = Label(self,text = rLife[0][0],height = 1, width = 15)
         self.ddate1.grid(sticky='w',row = 6, column = 3)
         if rLife[0][1] == None:
-            self.points2 = Label(self,text = '0',height = 1, width = 15)
+            self.points1 = Label(self,text = '0',height = 1, width = 15)
         else:
-            self.points2 = Label(self,text = rLife[0][1],height = 1, width = 15)
+            self.points1 = Label(self,text = rLife[0][1],height = 1, width = 15)
         self.points1.grid(sticky='w',row = 6, column = 4)
         self.tno2 = Label(self,text = result[0][1],height = 1, width = 15)
         self.tno2.grid(sticky='w',row = 7, column = 2)
