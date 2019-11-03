@@ -41,7 +41,9 @@ class DA(tkinter.Tk):
     def confirmClick(self):
         fname = self.entfname.get()
         lname = self.entlname.get()
-        result = self.SQLController.Abstract(fname,lname)
+        result = self.SQLController.TAbstract(fname,lname)
+        rLife = self.SQLController.AbstractLife(fname,lname)
+        rYear = self.SQLController.AbstractYear(fname,lname)
         
         # display result
         self.space = Label(self,text = '',height = 1, width = 10)
@@ -56,17 +58,23 @@ class DA(tkinter.Tk):
         self.time1.grid(sticky='w',row = 6, column = 1)
         self.time2 = Label(self,text = 'past 2 years',height = 1, width = 15)
         self.time2.grid(sticky='w',row = 7, column = 1)
-        self.tno1 = Label(self,text = str(result[0][0]),height = 1, width = 15)
+        self.tno1 = Label(self,text = result[0][0],height = 1, width = 15)
         self.tno1.grid(sticky='w',row = 6, column = 2)
-        self.ddate1 = Label(self,text = str(result[0][1]),height = 1, width = 15)
+        self.ddate1 = Label(self,text = rLife[0][0],height = 1, width = 15)
         self.ddate1.grid(sticky='w',row = 6, column = 3)
-        self.points1 = Label(self,text = str(result[0][2]),height = 1, width = 15)
+        if rLife[0][1] == None:
+            self.points1 = Label(self,text = '0',height = 1, width = 15)
+        else:
+            self.points1 = Label(self,text = rLife[0][1],height = 1, width = 15)
         self.points1.grid(sticky='w',row = 6, column = 4)
-        self.tno2 = Label(self,text = str(result[0][3]),height = 1, width = 15)
+        self.tno2 = Label(self,text = result[0][1],height = 1, width = 15)
         self.tno2.grid(sticky='w',row = 7, column = 2)
-        self.ddate2 = Label(self,text = str(result[0][4]),height = 1, width = 15)
+        self.ddate2 = Label(self,text = rYear[0][0],height = 1, width = 15)
         self.ddate2.grid(sticky='w',row = 7, column = 3)
-        self.points2 = Label(self,text = str(result[0][5]),height = 1, width = 15)
+        if rYear[0][1] == None:
+            self.points2 = Label(self,text = '0',height = 1, width = 15)
+        else:
+            self.points2 = Label(self,text = rYear[0][1],height = 1, width = 15)
         self.points2.grid(sticky='w',row = 7, column = 4)
                 
     def ticketClick(self):

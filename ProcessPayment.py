@@ -43,12 +43,13 @@ class ProcessPaymentApp(tkinter.Tk):
             winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Ticket Number must not be Empty")
             winErr.mainloop()
             return
-        amount = int(self.entamt.get())
-        if len(amount) == 0:
-            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Payment Amount must not be Empty")
+        amount = self.entamt.get()
+        if (len(amount) == 0) or not amount.isdigit():
+            
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Payment Amount must be a digit")
             winErr.mainloop()
             return     
-        
+        amount = int(amount)
         #todays date
         pdate = datetime.date(datetime.now())
         
@@ -57,7 +58,8 @@ class ProcessPaymentApp(tkinter.Tk):
         if fine is None:
             winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Fine not Found. Verify ticket number.")
             winErr.mainloop()
-            return     
+            return
+        fine = int(fine[0])
         payments = self.SQLController.GetAllPayments(tno)
         previousPayments = 0
         for payment in payments:
