@@ -78,13 +78,13 @@ class FindCarOwnerApp(tkinter.Tk):
                 #If no matches are found an error window will appear
                 winErr = ErrorWindowPopup.ErrorWindowPopup("No matches found for given criteria.")
                 winErr.mainloop()                
-            elif len(results)>4:
-                #If more than 4 matches - MoreThanFour window will appear
+            elif len(results)>=4:
+                #If 4 or more matches - MoreThanFour window will appear
                 resultsMore = CarOwnerResults.MoreThanFour(self.database, self.currentUser, [make,model,year,color,plate],results)
                 self.SQLController.CommitAndClose()
                 self.destroy() 
                 resultsMore.mainloop()
-            elif len(results)<=4:
+            elif len(results)<4:
                 #If less than 4 - LessThanFour window will appear
                 resultsLess = CarOwnerResults.LessThanFour(self.database, self.currentUser, [make,model,year,color,plate],results)
                 self.SQLController.CommitAndClose()
@@ -99,14 +99,3 @@ class FindCarOwnerApp(tkinter.Tk):
         self.destroy()          
         trafficOfficerMenu.mainloop()        
         
-        
-
-
-####TEST REMOVE AFTER TESTED######
-#def main():
-    #database = './test.db'
-    #findCar = FindCarOwnerApp(database, 'Find Car Owner')
-    #findCar.mainloop()
-                    
-#if __name__ == '__main__':
-    #main()
