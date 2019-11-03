@@ -7,7 +7,7 @@ class SQLController:
     
     ##QUERYING USER
     def GetUserType(self, username,password):
-        self.cursor.execute('SELECT utype FROM users WHERE uid=:username AND pwd=:password',{"username":username,"password":password})
+        self.cursor.execute('SELECT utype FROM users WHERE uid=:username COLLATE NOCASE AND pwd=:password',{"username":username,"password":password})
         user = self.cursor.fetchone()
         self.connection.commit()
         if user is None: 
@@ -17,7 +17,7 @@ class SQLController:
             return uType    
         
     def QueryUserCity(self, username):
-        self.cursor.execute('SELECT city FROM users WHERE uid=:username',{"username":username})
+        self.cursor.execute('SELECT city FROM users WHERE uid=:username COLLATE NOCASE',{"username":username})
         city = self.cursor.fetchone()
         if city is None:
             return None
@@ -26,7 +26,7 @@ class SQLController:
         
     ##QUERYING BIRTHS   
     def CheckUniqueBirthRegno(self, regno):
-        self.cursor.execute('SELECT * FROM births WHERE regno=:regno',{"regno":regno})
+        self.cursor.execute('SELECT * FROM births WHERE regno=:regno COLLATE NOCASE',{"regno":regno})
         result = self.cursor.fetchone()
         if result is None:
             #if nothing found, the regno is unique and does not exist yet
@@ -43,7 +43,7 @@ class SQLController:
 
     ##QUERYING PERSONS
     def QueryPersonsAll(self, first, last):
-        self.cursor.execute('SELECT * FROM persons WHERE fname=:first AND lname=:last',{"first":first, "last":last})
+        self.cursor.execute('SELECT * FROM persons WHERE fname=:first COLLATE NOCASE AND lname=:last COLLATE NOCASE',{"first":first, "last":last})
         person = self.cursor.fetchone()
         if person is None:
             return None
@@ -58,13 +58,13 @@ class SQLController:
             return True
     ##QUERY TICKETS
     def GetTicketFine(self, ticketnum):
-        self.cursor.execute('SELECT fine FROM tickets WHERE tno=:ticketnum',{'ticketnum':ticketnum})
+        self.cursor.execute('SELECT fine FROM tickets WHERE tno=:ticketnum COLLATE NOCASE',{'ticketnum':ticketnum})
         fine = self.cursor.fetchone()
         return fine 
     
     ##QUERY PAYMENTS
     def GetAllPayments(self, ticketnum):
-        self.cursor.execute('SELECT amount FROM payments WHERE tno=:ticketnum',{'ticketnum':ticketnum})
+        self.cursor.execute('SELECT amount FROM payments WHERE tno=:ticketnum COLLATE NOCASE',{'ticketnum':ticketnum})
         payments = self.cursor.fetchall()
         return payments
         
