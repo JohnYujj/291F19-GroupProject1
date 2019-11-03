@@ -131,6 +131,7 @@ class LessThanFour(tkinter.Tk):
         rowIndex = 1
         for data in self.results:
             data = list(data)
+            print(data)
             for columnIndex in range(9):
                 text = str(data[columnIndex])
                 textLbl = text + str(columnIndex)
@@ -152,10 +153,10 @@ class LessThanFour(tkinter.Tk):
 
 
 ####TEST REMOVE AFTER TESTED######
-def main():
-    database = './test.db'
-    more = LessThanFour(database, 'username',['red'],[('Chevrolet','Camaro',1969,'red','plate1','2019-06-30','2025-10-09','John','Doe'),('Doge','Challenger',1969,'red','plate2','2016-03-05','2021-09-08','Jane','Doe'),('Doge','Challenger',1969,'red','plate3','2009-01-02','2019-11-19','Miss','Sunny'),('Doge','Challenger',1969,'red','plate4','2017-08-10','2019-10-08','Mister','Sunny')])
-    more.mainloop()
+#def main():
+    #database = './test.db'
+    #more = LessThanFour(database, 'username',['red'],[('Chevrolet','Camaro',1969,'red','plate1','2019-06-30','2025-10-09','John','Doe'),('Doge','Challenger',1969,'red','plate2','2016-03-05','2021-09-08','Jane','Doe'),('Doge','Challenger',1969,'red','plate3','2009-01-02','2019-11-19','Miss','Sunny'),('Doge','Challenger',1969,'red','plate4','2017-08-10','2019-10-08','Mister','Sunny')])
+    #more.mainloop()
                     
-if __name__ == '__main__':
-    main()
+#if __name__ == '__main__':
+    #main()

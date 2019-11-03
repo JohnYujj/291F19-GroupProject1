@@ -96,6 +96,7 @@ class SQLController:
         else:
             return result   
         
+        
     def NewVehicleReg(self,regno,regdate,plate,vin,fname,lname):
         self.cursor.execute("SELECT date('now','+1 years')")
         self.connection.commit()
@@ -151,15 +152,15 @@ class SQLController:
     def FindCarOwner(self,make,model,year,color,plate):
         criteriaLst=[]
         if len(make)!=0:
-            criteriaLst.append('make='+"'"+str(make)+"'")
+            criteriaLst.append('make='+"'"+str(make)+"'" + ' COLLATE NOCASE ')
         if len(model)!=0:
-            criteriaLst.append('model='+"'"+str(model)+"'")
+            criteriaLst.append('model='+"'"+str(model)+"'"+ ' COLLATE NOCASE ')
         if len(year)!=0:
             criteriaLst.append('year='+"'"+str(year)+"'")
         if len(color)!=0:
-            criteriaLst.append('color='+"'"+str(color)+"'")
+            criteriaLst.append('color='+"'"+str(color)+"'"+ ' COLLATE NOCASE ')
         if len(plate)!=0:
-            criteriaLst.append('plate='+"'"+str(plate)+"'")
+            criteriaLst.append('plate='+"'"+str(plate)+"'")+ ' COLLATE NOCASE '
         criteriaStr = ' AND '.join(criteriaLst)
         
         self.cursor.execute('SELECT make, model, year, color, plate, MAX(regdate), expiry, fname, lname FROM registrations r, vehicles v WHERE r.vin=v.vin AND ' + criteriaStr + ' GROUP BY r.vin')
@@ -170,6 +171,7 @@ class SQLController:
         else:
             return result
     
+
     def AbstractLife(self,fname,lname):
         self.cursor.execute('select count(ddate), sum(points) from demeritNotices where fname = :fname and lname = :lname',{'fname':fname,'lname':lname})
         return self.cursor.fetchall()
@@ -181,6 +183,7 @@ class SQLController:
     def TAbstract(self,fname,lname):
         self.cursor.execute('select count(t1.tno),count(t2.tno) from tickets t1, tickets t2 where t1.regno in (select regno from registrations where fname = :fname and lname = :lname) and t2.regno in (select regno from registrations where fname = :fname and lname = :lname) and t2.vdate > date("now", "-2 years")',{'fname':fname,'lname':lname})
         return self.cursor.fetchall()
+
     
     def TicketView(self,fname,lname):
         self.cursor.execute('select tno, vdate, violation, fine, t.regno, make, model from tickets t, registrations r, vehicles v where r.regno = t.regno and r.vin = v.vin and r.fname = :fname and r.lname = :lname order by vdate desc',{"fname":fname,"lname":lname})

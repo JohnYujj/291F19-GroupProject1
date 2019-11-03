@@ -15,19 +15,19 @@ class ProcessBillofSale(tkinter.Tk):
         self.database = dbPath
         self.SQLController = SQLControlClass.SQLController(self.database)
         
-        #creates layout of window using three frames: top and bottom
+        #creates layout of window using two frames: top and bottom
         self.topFrame = Frame(self)
         self.topFrame.grid(row=0)
         self.bottomFrame = Frame(self)
         self.bottomFrame.grid(row=2)
         
-        #topFrame - userID, registration number entry and find button
+        #topFrame - userID, instructions to fill in fields
         self.lblUsername = Label(self.topFrame, text=self.currentUser, height = 1, width = 20, anchor="w")
         self.lblUsername.grid(sticky=W, row = 0)       
         self.instructions = Label(self.topFrame,text="Please fill in the following fields:")
         self.instructions.grid(row=1,padx=75,sticky=W)
         
-        #bottomFrame
+        #bottomFrame - entries for vin, plate, current owner, new owner
         ##Vin Number
         self.vin = Label(self.bottomFrame,text="VIN:")
         self.vin.grid(row=0,sticky=E,pady=(10,0))
@@ -92,12 +92,17 @@ class ProcessBillofSale(tkinter.Tk):
             winErr.mainloop()
         else:
             currentOwner = self.SQLController.GetCurOwner(vin,plate)
+            newOwner = self.SQLController.QueryPersonsAll(nfname, nlname)
             if currentOwner is None:
                 winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Information not found, please try again")
                 winErr.mainloop() 
+            elif newOwner is None:
+                winErr = ErrorWindowPopup.ErrorWindowPopup("Error: New Owner does not exist in database. Please try again")
+                winErr.mainloop()                
             elif len(currentOwner)>1:
                 winErr = ErrorWindowPopup.ErrorWindowPopup("Error: More than 1 result found. Please try again with a different plate number")
-                winErr.mainloop()                 
+                winErr.mainloop()  
+            # Checks if the user's input of current owner matches what is in the database
             elif currentOwner[0][0].lower()!=cfname.lower() and currentOwner[0][1].lower()!=clname.lower():
                 winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Name of current owner provided does not match the name to the registered vehicle. Please try again")
                 winErr.mainloop()
@@ -116,7 +121,7 @@ class ProcessBillofSale(tkinter.Tk):
                     self.plateEntry.delete(0,'end')
                     successMsg = ErrorWindowPopup.ErrorWindowPopup("Successfully processed bill of sale")
                     successMsg.mainloop()
-            
+        
         
     def backToMenu(self):
         #Command for back button. Returns user to main traffic officer menu
@@ -125,14 +130,3 @@ class ProcessBillofSale(tkinter.Tk):
         self.destroy()          
         registryMenu.mainloop()        
         
-        
-
-
-###TEST REMOVE AFTER TESTED######
-def main():
-    database = './test.db'
-    processBill = ProcessBillofSale(database, 'username1')
-    processBill.mainloop()
-                    
-if __name__ == '__main__':
-    main()
