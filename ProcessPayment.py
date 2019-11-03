@@ -44,8 +44,9 @@ class ProcessPaymentApp(tkinter.Tk):
             winErr.mainloop()
             return
         amount = self.entamt.get()
-        if len(amount) == 0:
-            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Payment Amount must not be Empty")
+        if (len(amount) == 0) or not amount.isdigit():
+            
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Payment Amount must be a digit")
             winErr.mainloop()
             return     
         amount = int(amount)
