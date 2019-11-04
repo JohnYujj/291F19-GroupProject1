@@ -187,10 +187,13 @@ class SQLController:
         self.cursor.execute('select count(ddate), sum(points) from demeritNotices where fname = :fname collate nocase and lname = :lname collate nocase and ddate > date("now", "-2 years")',{'fname':fname,'lname':lname})
         return self.cursor.fetchall()
         
-    def TAbstract(self,fname,lname):
-        self.cursor.execute('select count(t1.tno),count(t2.tno) from tickets t1, tickets t2 where t1.regno in (select regno from registrations where fname = :fname collate nocase and lname = :lname collate nocase) and t2.regno in (select regno from registrations where fname = :fname collate nocase and lname = :lname collate nocase) and t2.vdate > date("now", "-2 years")',{'fname':fname,'lname':lname})
+    def TAbstractLife(self,fname,lname):
+        self.cursor.execute('select count(tno) from tickets where regno in (select regno from registrations where fname = :fname collate nocase and lname = :lname collate nocase)',{'fname':fname,'lname':lname})
         return self.cursor.fetchall()
-
+    
+    def TAbstractYear(self,fname,lname):
+        self.cursor.execute('select count(tno) from tickets where regno in (select regno from registrations where fname = :fname collate nocase and lname = :lname collate nocase) and vdate > date("now", "-2 years")',{'fname':fname,'lname':lname})
+        return self.cursor.fetchall()
     
     def TicketView(self,fname,lname):
         self.cursor.execute('select tno, vdate, violation, fine, t.regno, make, model from tickets t, registrations r, vehicles v where r.regno = t.regno and r.vin = v.vin and r.fname = :fname collate nocase and r.lname = :lname collate nocase order by vdate desc',{"fname":fname,"lname":lname})

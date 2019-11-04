@@ -20,9 +20,9 @@ class DA(tkinter.Tk):
         self.SQLController = SQLControlClass.SQLController(self.database)
         
         # input name
-        self.lblUsername = Label(self, text="first name", height = 1, width = 10)
+        self.lblUsername = Label(self, text="First Name", height = 1, width = 10)
         self.lblUsername.grid(sticky="W", row = 1, column = 1)
-        self.lblPassword = Label(self, text="last name", height = 1, width = 10)
+        self.lblPassword = Label(self, text="Last Name", height = 1, width = 10)
         self.lblPassword.grid(sticky="W", row = 2, column = 1)
         self.entfname = Entry(self, width = 20)
         self.entfname.grid(sticky="W", row = 1, column = 2)
@@ -31,11 +31,11 @@ class DA(tkinter.Tk):
         self.empty = Label(self,text = '',height = 1, width = 10)
         self.empty.grid(sticky='w',row = 3, column = 3)
         
-        self.btnExit = Button(self, text ="exit", command=self.exitClick)
+        self.btnExit = Button(self, text ="Cancel", command=self.exitClick)
         self.btnExit.grid(row = 3, column = 1)
-        self.btnLogin = Button(self, text ="abstract", command=self.confirmClick)
+        self.btnLogin = Button(self, text ="Abstract", command=self.confirmClick)
         self.btnLogin.grid(row = 3, column = 2)
-        self.btnticket = Button(self, text ="ticket", command=self.ticketClick)
+        self.btnticket = Button(self, text ="Ticket", command=self.ticketClick)
         self.btnticket.grid(row = 3, column = 3)
         
     def confirmClick(self):
@@ -49,15 +49,15 @@ class DA(tkinter.Tk):
         # display result
         self.space = Label(self,text = '',height = 1, width = 10)
         self.space.grid(sticky='w',row = 4, column = 1)
-        self.tno = Label(self,text = 'number of tickets',height = 1, width = 15)
+        self.tno = Label(self,text = 'Number of Tickets',height = 1, width = 15)
         self.tno.grid(sticky='w',row = 5, column = 2)
-        self.ddate = Label(self,text = 'number of notices',height = 1, width = 15)
+        self.ddate = Label(self,text = 'Number of Notices',height = 1, width = 15)
         self.ddate.grid(sticky='w',row = 5, column = 3)
-        self.points = Label(self,text = 'sum of points',height = 1, width = 15)
+        self.points = Label(self,text = 'Sum of Points',height = 1, width = 15)
         self.points.grid(sticky='w',row = 5, column = 4)
-        self.time1 = Label(self,text = 'lifetime',height = 1, width = 15)
+        self.time1 = Label(self,text = 'Lifetime',height = 1, width = 15)
         self.time1.grid(sticky='w',row = 6, column = 1)
-        self.time2 = Label(self,text = 'past 2 years',height = 1, width = 15)
+        self.time2 = Label(self,text = 'Past 2 Years',height = 1, width = 15)
         self.time2.grid(sticky='w',row = 7, column = 1)
         self.tno1 = Label(self,text = tLife[0][0],height = 1, width = 15)
         self.tno1.grid(sticky='w',row = 6, column = 2)
@@ -98,30 +98,30 @@ class TicketView(tkinter.Tk):
         self.n = 0
         self.tl = ticket
         
-        self.tno = Label(self,text = 'ticket number',height = 1, width = 15)
+        self.tno = Label(self,text = 'Ticket Number',height = 1, width = 15)
         self.tno.grid(sticky='w',row = 1, column = 1)
-        self.ddate = Label(self,text = 'violation date',height = 1, width = 15)
+        self.ddate = Label(self,text = 'Violation Date',height = 1, width = 15)
         self.ddate.grid(sticky='w',row = 1, column = 2)
-        self.points = Label(self,text = 'description',height = 1, width = 15)
+        self.points = Label(self,text = 'Description',height = 1, width = 15)
         self.points.grid(sticky='w',row = 1, column = 3)
-        self.points = Label(self,text = 'fine',height = 1, width = 15)
+        self.points = Label(self,text = 'Fine',height = 1, width = 15)
         self.points.grid(sticky='w',row = 1, column = 4)
-        self.points = Label(self,text = 'registration number',height = 1, width = 15)
+        self.points = Label(self,text = 'Registration Number',height = 1, width = 15)
         self.points.grid(sticky='w',row = 1, column = 5)
-        self.points = Label(self,text = 'car maker',height = 1, width = 15)
+        self.points = Label(self,text = 'Car Maker',height = 1, width = 15)
         self.points.grid(sticky='w',row = 1, column = 6)
-        self.points = Label(self,text = 'car model',height = 1, width = 15)
+        self.points = Label(self,text = 'Car Model',height = 1, width = 15)
         self.points.grid(sticky='w',row = 1, column = 7)
         
         if len(self.tl) > 5:
-            self.btnExit = Button(self, text ="exit", command=self.exitClick)
+            self.btnExit = Button(self, text ="Cancel", command=self.exitClick)
             self.btnExit.grid(row = 7, column = 1)
-            self.btnP = Button(self, text ="previous", command=self.preClick)
+            self.btnP = Button(self, text ="Previous", command=self.preClick)
             self.btnP.grid(row = 7, column = 3)
-            self.btnN = Button(self, text ="next", command=self.nextClick)
+            self.btnN = Button(self, text ="Next", command=self.nextClick)
             self.btnN.grid(row = 7, column = 4)
         else:
-            self.btnExit = Button(self, text ="exit", command=self.exitClick)
+            self.btnExit = Button(self, text ="Cancel", command=self.exitClick)
             self.btnExit.grid(row = len(self.tl)+2, column = 1)
     
     def show(self):

@@ -21,14 +21,14 @@ class Vrenew(tkinter.Tk):
         self.database = dbPath
         self.SQLController = SQLControlClass.SQLController(self.database)
         
-        self.regno = Label(self, text="registration number", height = 1, width = 15)
+        self.regno = Label(self, text="Registration Number", height = 1, width = 15)
         self.regno.grid(sticky="W", row = 1, column = 1)
         self.entregno = Entry(self, width = 20)
         self.entregno.grid(sticky="W", row = 1, column = 2)
         
-        self.btnExit = Button(self, text ="exit", command=self.exitClick)
+        self.btnExit = Button(self, text ="Cancel", command=self.exitClick)
         self.btnExit.grid(row = 2, column = 1)
-        self.btnLogin = Button(self, text ="renew", command=self.renewClick)
+        self.btnLogin = Button(self, text ="Renew", command=self.renewClick)
         self.btnLogin.grid(row = 2, column = 2)
     
     def renewClick(self):
