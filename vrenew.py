@@ -21,7 +21,7 @@ class Vrenew(tkinter.Tk):
         self.database = dbPath
         self.SQLController = SQLControlClass.SQLController(self.database)
         
-        self.regno = Label(self, text="Registration Number", height = 1, width = 15)
+        self.regno = Label(self, text="Registration Number", height = 1, width = 20)
         self.regno.grid(sticky="W", row = 1, column = 1)
         self.entregno = Entry(self, width = 20)
         self.entregno.grid(sticky="W", row = 1, column = 2)
