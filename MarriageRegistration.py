@@ -43,9 +43,9 @@ class MarriageRegistrationApp(tkinter.Tk):
         self.empty = Label(self,text = '',height = 1, width = 3)
         self.empty.grid(sticky='w',row = 1, column = 3)
         
-        self.btnExit = Button(self, text ="exit", command=self.exitClick)
+        self.btnExit = Button(self, text ="Cancel", command=self.exitClick)
         self.btnExit.grid(row = 5, column = 1)
-        self.btnLogin = Button(self, text ="confirm", command=self.confirmClick)
+        self.btnLogin = Button(self, text ="Confirm", command=self.confirmClick)
         self.btnLogin.grid(row = 5, column = 2)
     
     def confirmClick(self):

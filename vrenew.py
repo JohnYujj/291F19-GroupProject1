@@ -35,12 +35,8 @@ class Vrenew(tkinter.Tk):
         regno = self.entregno.get()
         expiry = self.SQLController.Checkexpiry(regno)
         if expiry == None:
-            self.SQLController.CommitAndClose()
-            self.destroy()
             winErr = ErrorWindowPopup.ErrorWindowPopup("vehicle not registered")
             winErr.mainloop()
-            winReg = RegistryAgentApp.RegistryAgentApp(self.database,self.currentUser)
-            winReg.mainloop()
         else:
             if expiry[0][0] > str(datetime.date(datetime.now())):
                 self.SQLController.RenewVbefore(regno,expiry[0][0])
