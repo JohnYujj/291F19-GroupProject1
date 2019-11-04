@@ -72,6 +72,8 @@ class MarriageRegistrationApp(tkinter.Tk):
         
         self.SQLController.MarriageReg(regno,regdate,regplace,pfname1,plname1,pfname2,plname2)
         
+        self.SQLController.CommitAndClose()
+        self.destroy()
         winErr = ErrorWindowPopup.ErrorWindowPopup("marriage registration success")
         winErr.mainloop()        
         winReg = RegistryAgentApp.RegistryAgentApp(self.database,self.currentUser)
