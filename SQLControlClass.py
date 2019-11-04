@@ -66,13 +66,13 @@ class SQLController:
             return True
     ##QUERY TICKETS
     def GetTicketFine(self, ticketnum):
-        self.cursor.execute('SELECT fine FROM tickets WHERE tno=:ticketnum COLLATE NOCASE',{'ticketnum':ticketnum})
+        self.cursor.execute('SELECT fine FROM tickets WHERE tno=(:ticketnum) COLLATE NOCASE',{'ticketnum':ticketnum})
         fine = self.cursor.fetchone()
         return fine 
     
     ##QUERY PAYMENTS
     def GetAllPayments(self, ticketnum):
-        self.cursor.execute('SELECT amount FROM payments WHERE tno=:ticketnum COLLATE NOCASE',{'ticketnum':ticketnum})
+        self.cursor.execute('SELECT amount FROM payments WHERE tno=(:ticketnum) COLLATE NOCASE',{'ticketnum':ticketnum})
         payments = self.cursor.fetchall()
         return payments
         
@@ -87,7 +87,7 @@ class SQLController:
         
     ###PROCESS BILL OF SALE
     def CheckUniqueRegNo(self, regno):
-        self.cursor.execute('SELECT * FROM registrations WHERE regno=:regno',{"regno":regno})
+        self.cursor.execute('SELECT * FROM registrations WHERE regno=(:regno)',{"regno":regno})
         result = self.cursor.fetchone()
         self.connection.commit()
         if result is None:
@@ -96,7 +96,7 @@ class SQLController:
             return True    
     
     def GetCurOwner(self, vin, plate):        
-        self.cursor.execute('SELECT fname,lname FROM registrations WHERE vin=:vin AND plate=:plate COLLATE NOCASE GROUP BY regno HAVING MAX(regdate)',{'vin':vin,'plate':plate})
+        self.cursor.execute('SELECT fname,lname FROM registrations WHERE vin=(:vin) AND plate=(:plate) COLLATE NOCASE GROUP BY regno HAVING MAX(regdate)',{'vin':vin,'plate':plate})
         result = self.cursor.fetchall()
         self.connection.commit()
         if len(result)==0:
@@ -129,7 +129,7 @@ class SQLController:
     ##TRAFFIC OFFICER##
     ##ISSUE TICKET APP
     def FindRegVehicle(self, rn):
-        self.cursor.execute('SELECT fname, lname, make, model, year, color FROM registrations r, vehicles v WHERE r.vin = v.vin AND regno=:number',{"number":rn})
+        self.cursor.execute('SELECT fname, lname, make, model, year, color FROM registrations r, vehicles v WHERE r.vin = v.vin AND regno=(:number)',{"number":rn})
         reg = self.cursor.fetchone()  
         self.connection.commit()
         if reg is None:
@@ -138,7 +138,7 @@ class SQLController:
             return reg 
         
     def CheckUniqueTicketNo(self, tno):
-        self.cursor.execute('SELECT * FROM tickets WHERE tno=:tno',{"tno":tno})
+        self.cursor.execute('SELECT * FROM tickets WHERE tno=(:tno)',{"tno":tno})
         result = self.cursor.fetchone()
         self.connection.commit()
         if result is None:
@@ -159,15 +159,15 @@ class SQLController:
     def FindCarOwner(self,make,model,year,color,plate):
         criteriaLst=[]
         if len(make)!=0:
-            criteriaLst.append('make='+"'"+str(make)+"'" + ' COLLATE NOCASE ')
+            criteriaLst.append('make='+"('"+str(make)+"')" + ' COLLATE NOCASE ')
         if len(model)!=0:
-            criteriaLst.append('model='+"'"+str(model)+"'"+ ' COLLATE NOCASE ')
+            criteriaLst.append('model='+"('"+str(model)+"')"+ ' COLLATE NOCASE ')
         if len(year)!=0:
-            criteriaLst.append('year='+"'"+str(year)+"'")
+            criteriaLst.append('year='+"('"+str(year)+"')")
         if len(color)!=0:
-            criteriaLst.append('color='+"'"+str(color)+"'"+ ' COLLATE NOCASE ')
+            criteriaLst.append('color='+"('"+str(color)+"')"+ ' COLLATE NOCASE ')
         if len(plate)!=0:
-            criteriaLst.append('plate='+"'"+str(plate)+"'")+ ' COLLATE NOCASE '
+            criteriaLst.append('plate='+"('"+str(plate)+"')"+ ' COLLATE NOCASE ')
         criteriaStr = ' AND '.join(criteriaLst)
         
         self.cursor.execute('SELECT make, model, year, color, plate, MAX(regdate), expiry, fname, lname FROM registrations r, vehicles v WHERE r.vin=v.vin AND ' + criteriaStr + ' GROUP BY r.vin')
@@ -180,23 +180,23 @@ class SQLController:
     
 
     def AbstractLife(self,fname,lname):
-        self.cursor.execute('select count(ddate), sum(points) from demeritNotices where fname = :fname collate nocase and lname = :lname collate nocase',{'fname':fname,'lname':lname})
+        self.cursor.execute('select count(ddate), sum(points) from demeritNotices where fname = (:fname) collate nocase and lname = (:lname) collate nocase',{'fname':fname,'lname':lname})
         return self.cursor.fetchall()
     
     def AbstractYear(self,fname,lname):
-        self.cursor.execute('select count(ddate), sum(points) from demeritNotices where fname = :fname collate nocase and lname = :lname collate nocase and ddate > date("now", "-2 years")',{'fname':fname,'lname':lname})
+        self.cursor.execute('select count(ddate), sum(points) from demeritNotices where fname = (:fname) collate nocase and lname = (:lname) collate nocase and ddate > date("now", "-2 years")',{'fname':fname,'lname':lname})
         return self.cursor.fetchall()
         
     def TAbstractLife(self,fname,lname):
-        self.cursor.execute('select count(tno) from tickets where regno in (select regno from registrations where fname = :fname collate nocase and lname = :lname collate nocase)',{'fname':fname,'lname':lname})
+        self.cursor.execute('select count(tno) from tickets where regno in (select regno from registrations where fname = (:fname) collate nocase and lname = (:lname) collate nocase)',{'fname':fname,'lname':lname})
         return self.cursor.fetchall()
     
     def TAbstractYear(self,fname,lname):
-        self.cursor.execute('select count(tno) from tickets where regno in (select regno from registrations where fname = :fname collate nocase and lname = :lname collate nocase) and vdate > date("now", "-2 years")',{'fname':fname,'lname':lname})
+        self.cursor.execute('select count(tno) from tickets where regno in (select regno from registrations where fname = (:fname) collate nocase and lname = (:lname) collate nocase) and vdate > date("now", "-2 years")',{'fname':fname,'lname':lname})
         return self.cursor.fetchall()
     
     def TicketView(self,fname,lname):
-        self.cursor.execute('select tno, vdate, violation, fine, t.regno, make, model from tickets t, registrations r, vehicles v where r.regno = t.regno and r.vin = v.vin and r.fname = :fname collate nocase and r.lname = :lname collate nocase order by vdate desc',{"fname":fname,"lname":lname})
+        self.cursor.execute('select tno, vdate, violation, fine, t.regno, make, model from tickets t, registrations r, vehicles v where r.regno = t.regno and r.vin = v.vin and r.fname = (:fname) collate nocase and r.lname = (:lname) collate nocase order by vdate desc',{"fname":fname,"lname":lname})
         return self.cursor.fetchall()
     
     def MarriageReg(self,regno,regdate,regplace,fname1,lname1,fname2,lname2):
@@ -204,7 +204,7 @@ class SQLController:
         self.connection.commit()
     
     def CheckUniqueMarriageRegno(self,regno):
-        self.cursor.execute('SELECT * FROM marriages WHERE regno=:regno collate nocase',{"regno":regno})
+        self.cursor.execute('SELECT * FROM marriages WHERE regno=(:regno) collate nocase',{"regno":regno})
         result = self.cursor.fetchone()
         if result is None:
             #if nothing found, the regno is unique and does not exist yet
@@ -213,15 +213,15 @@ class SQLController:
             return True
     
     def Checkexpiry(self,regno):
-        self.cursor.execute('select expiry from registrations where regno=:regno collate nocase',{'regno':regno})
+        self.cursor.execute('select expiry from registrations where regno=(:regno) collate nocase',{'regno':regno})
         return self.cursor.fetchone()
     
     def RenewVbefore(self,regno,ex):
-        self.cursor.execute('update registrations set expiry = date(:ex,"+1 year") where regno = :regno collate nocase',{'regno':regno,'ex':ex})
+        self.cursor.execute('update registrations set expiry = date((:ex),"+1 year") where regno = (:regno) collate nocase',{'regno':regno,'ex':ex})
         self.connection.commit()
 
     def RenewVafter(self,regno):
-        self.cursor.execute('update registrations set expiry = date("now","+1 year") where regno = :regno collate nocase',{'regno':regno})
+        self.cursor.execute('update registrations set expiry = date("now","+1 year") where regno = (:regno) collate nocase',{'regno':regno})
         self.connection.commit()
 
     def CommitAndClose(self):
