@@ -200,6 +200,18 @@ class SQLController:
             return False
         else:
             return True
+    
+    def Checkexpiry(self,regno):
+        self.cursor.execute('select expiry from registrations where regno=:regno',{'regno':regno})
+        return self.cursor.fetchone()
+    
+    def RenewVbefore(self,regno,ex):
+        self.cursor.execute('update registrations set expiry = date(:ex,"+1 year") where regno = :regno',{'regno':regno,'ex':ex})
+        self.connection.commit()
+
+    def RenewVafter(self,regno):
+        self.cursor.execute('update registrations set expiry = date("now","+1 year") where regno = :regno',{'regno':regno})
+        self.connection.commit()
 
     def CommitAndClose(self):
         self.connection.commit()	
