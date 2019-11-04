@@ -114,17 +114,28 @@ class IssueTicketApp(tkinter.Tk):
         vDate = self.vDateEntry.get()
         text = self.vTextEntry.get()
         fineAmt = self.fineAmtEntry.get()
-        ticketNo = random.randint(0,1000)
+        ticketNo = random.randint(100,1000)
         while self.SQLController.CheckUniqueTicketNo(ticketNo):
-            ticketNo = random.randint(0,1000)
+            ticketNo = random.randint(100,1000)
+            
         #If a date is not given, today's date will be supplied
         if len(vDate)==0:
-            vDate = datetime.date(datetime.now())    
+            vDate = datetime.date(datetime.now())
+
+        
         #Checks that registration number, text, and fine amount are not blank
         if len(regNo)==0 or len(text)==0 or len(fineAmt)==0:
             winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Please fill in a valid registration number, violation text and fine amount.")
             winErr.mainloop()
-        else:
+        elif self.checkDate(vDate)==False:
+            #Checks for valid date
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Please enter a valid date in the form YYYY-MM-DD")
+            winErr.mainloop()  
+        elif fineAmt.isdigit()==False:
+            #Checks if valid fineAmt
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Please enter a valid fine amount in dollar amounts with no cents")
+            winErr.mainloop()              
+        else: 
             #Creates ticket and clears fields
             ticketError = self.SQLController.CreateTicket(ticketNo, regNo, fineAmt, text, vDate)
             if ticketError == True:
@@ -138,7 +149,16 @@ class IssueTicketApp(tkinter.Tk):
                 self.showData(['','','','','',''])
                 successMsg = ErrorWindowPopup.ErrorWindowPopup("Successfully issued ticket")
                 successMsg.mainloop()
-            
+    
+    def checkDate(self,date):
+        try:
+            datetime.strptime(str(date), '%Y-%m-%d')
+        except ValueError:
+            return False
+        else:
+            return True
+
+    
         
     def backToMenu(self):
         #Command for back button. Returns user to main traffic officer menu
@@ -147,14 +167,3 @@ class IssueTicketApp(tkinter.Tk):
         self.destroy()          
         trafficOfficerMenu.mainloop()        
         
-        
-
-
-####TEST REMOVE AFTER TESTED######
-#def main():
-    #database = './test.db'
-    #isTi = IssueTicketApp(database, 'issueticket')
-    #isTi.mainloop()
-                    
-#if __name__ == '__main__':
-    #main()

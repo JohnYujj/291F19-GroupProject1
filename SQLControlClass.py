@@ -140,13 +140,12 @@ class SQLController:
         
     def CreateTicket(self, tno, regno, fine, violation, vdate):
         try:
-            self.cursor.execute('INSERT INTO tickets VALUES(:tno ,:regno ,:fine ,:violation ,:vdate)',{"tno":tno, "regno":regno, "fine":fine, "violation":violation, "vdate":vdate})
+            self.cursor.execute('INSERT INTO tickets VALUES(:tno, :regno, :fine, :violation, :vdate)',{"tno":tno, "regno":regno, "fine":fine, "violation":violation, "vdate":vdate})
             self.connection.commit()
         except:
             return True
-        
-        self.cursor.execute('INSERT INTO tickets VALUES(:tno ,:regno ,:fine ,:violation ,:vdate)',{"tno":tno, "regno":regno, "fine":fine, "violation":violation, "vdate":vdate})
-        self.connection.commit()    
+
+
     
     ##FIND CAR OWNER
     def FindCarOwner(self,make,model,year,color,plate):

@@ -10,6 +10,7 @@ import SQLControlClass
 import ErrorWindowPopup
 import IssueTicket
 import FindCarOwner
+import LoginApp
 
 class TrafficOfficerApp(tkinter.Tk):
     #should pass the uid when creating TrafficOfficerApp to determine who is currently logged in
@@ -52,17 +53,21 @@ class TrafficOfficerApp(tkinter.Tk):
         
     
     def logoutClick(self):
+        #destroy and create loginwindow
+        winLogin = LoginApp.LoginApp(self.database)
         self.SQLController.CommitAndClose()
-        self.destroy()   
+        self.destroy()
+        winLogin.mainloop()
+  
 
 
 
 
 #####TEST REMOVE AFTER TESTED######
-#def main():
-    #database = './test.db'
-    #trafOff = TrafficOfficerApp(database, 'username')
-    #trafOff.mainloop()
+def main():
+    database = './test.db'
+    trafOff = TrafficOfficerApp(database, 'username')
+    trafOff.mainloop()
         
-#if __name__ == '__main__':
-    #main()
+if __name__ == '__main__':
+    main()
