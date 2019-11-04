@@ -7,7 +7,7 @@ class SQLController:
     
     ##QUERYING USER
     def GetUserType(self, username,password):
-        self.cursor.execute('SELECT utype FROM users WHERE uid=:username COLLATE NOCASE AND pwd=:password',{"username":username,"password":password})
+        self.cursor.execute('SELECT utype FROM users WHERE uid=(:username) COLLATE NOCASE AND pwd=(:password)',{"username":username,"password":password})
         user = self.cursor.fetchone()
         self.connection.commit()
         if user is None: 
@@ -17,7 +17,7 @@ class SQLController:
             return uType    
         
     def QueryUserCity(self, username):
-        self.cursor.execute('SELECT city FROM users WHERE uid=:username COLLATE NOCASE',{"username":username})
+        self.cursor.execute('SELECT city FROM users WHERE uid=(:username) COLLATE NOCASE',{"username":username})
         city = self.cursor.fetchone()
         if city is None:
             return None
@@ -26,7 +26,7 @@ class SQLController:
         
     ##QUERYING BIRTHS   
     def CheckUniqueBirthRegno(self, regno):
-        self.cursor.execute('SELECT * FROM births WHERE regno=:regno COLLATE NOCASE',{"regno":regno})
+        self.cursor.execute('SELECT * FROM births WHERE regno=(:regno) COLLATE NOCASE',{"regno":regno})
         result = self.cursor.fetchone()
         if result is None:
             #if nothing found, the regno is unique and does not exist yet
@@ -35,7 +35,7 @@ class SQLController:
             return True
         
     def QueryBirthsAll(self, first, last):
-        self.cursor.execute('SELECT * FROM births WHERE fname=:first COLLATE NOCASE AND lname=:last COLLATE NOCASE',{"first":first, "last":last})
+        self.cursor.execute('SELECT * FROM births WHERE fname=(:first) COLLATE NOCASE AND lname=(:last) COLLATE NOCASE',{"first":first, "last":last})
         birth = self.cursor.fetchone()
         if birth is None:
             return None
@@ -51,7 +51,7 @@ class SQLController:
 
     ##QUERYING PERSONS
     def QueryPersonsAll(self, first, last):
-        self.cursor.execute('SELECT * FROM persons WHERE fname=:first COLLATE NOCASE AND lname=:last COLLATE NOCASE',{"first":first, "last":last})
+        self.cursor.execute('SELECT * FROM persons WHERE fname=(:first) COLLATE NOCASE AND lname=(:last) COLLATE NOCASE',{"first":first, "last":last})
         person = self.cursor.fetchone()
         if person is None:
             return None
