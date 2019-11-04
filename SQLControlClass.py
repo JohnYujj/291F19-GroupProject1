@@ -112,7 +112,7 @@ class SQLController:
     
     def UpdateExpiry(self,fname, lname, vin, plate, expiry):
         try:
-            self.cursor.execute('UPDATE registrations SET expiry=:expiry WHERE fname LIKE %:fname% AND lname LIKE %:lname% AND vin=:vin AND plate LIKE %:plate%',{'expiry':expiry,'fname':fname,'lname':lname,'vin':vin,'plate':plate})
+            self.cursor.execute('UPDATE registrations SET expiry=:expiry WHERE fname=:fname COLLATE NOCASE AND lname=:lname COLLATE NOCASE AND vin=:vin AND plate=:plate COLLATE NOCASE',{'expiry':expiry,'fname':fname,'lname':lname,'vin':vin,'plate':plate})
             self.connection.commit()
         except:
             return True   
