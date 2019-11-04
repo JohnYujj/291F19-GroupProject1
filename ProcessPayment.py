@@ -11,7 +11,7 @@ class ProcessPaymentApp(tkinter.Tk):
     #should pass the uid when creating registryAgentApp to determine who is currently logged in
     def __init__(self, dbPath, uid):
         tkinter.Tk.__init__(self)
-        self.title("Register Birth")
+        self.title("Process Payment")
         self.currentUser = uid
         self.database = dbPath
         self.SQLController = SQLControlClass.SQLController(self.database)

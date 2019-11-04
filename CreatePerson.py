@@ -65,7 +65,13 @@ class CreatePersonApp(tkinter.Tk):
         fname = self.entfname.get()
         lname = self.entlname.get()
         bdate = self.entbdate.get()
-        bplace = self.entbplace.get()
+        if not len(bdate) == 0:
+            #bdate may be null or date format
+            if not self.checkDate(bdate):
+                winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Birth Date must be in YYYY-MM-DD format")
+                winErr.mainloop()
+                return          
+        bplace = self.entbplace.get()            
         address = self.entAddress.get()
         phone = self.entPhone.get()
         
@@ -77,3 +83,11 @@ class CreatePersonApp(tkinter.Tk):
         
         self.SQLController.CommitAndClose()
         self.destroy()
+        
+    def checkDate(self,date):
+        try:
+            datetime.strptime(str(date), '%Y-%m-%d')
+        except ValueError:
+            return False
+        else:
+            return True        

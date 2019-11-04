@@ -33,6 +33,14 @@ class SQLController:
             return False
         else:
             return True
+        
+    def QueryBirthsAll(self, first, last):
+        self.cursor.execute('SELECT * FROM births WHERE fname=:first COLLATE NOCASE AND lname=:last COLLATE NOCASE',{"first":first, "last":last})
+        birth = self.cursor.fetchone()
+        if birth is None:
+            return None
+        else:
+            return birth        
     
     def CreateBirth(self, regno, fname, lname, regdate, regplace, gender, ffname, flname, mfname, mlname):
         try:

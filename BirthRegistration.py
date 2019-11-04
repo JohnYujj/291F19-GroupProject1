@@ -85,12 +85,40 @@ class BirthRegistrationApp(tkinter.Tk):
             winErr.mainloop()
             return        
         gender = self.entgender.get()
+        if len(gender) == 0 or not self.isValidEntryGender(gender):
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Gender must be M or F (m,f)")
+            winErr.mainloop()
+            return                
         bdate = self.entbdate.get()
+        if len(bdate) == 0 or not self.checkDate(bdate):
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Birth Date must be in YYYY-MM-DD format")
+            winErr.mainloop()
+            return          
         bplace = self.entbplace.get()
+        if len(bplace) == 0:
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Birth Place must not be empty")
+            winErr.mainloop()
+            return          
         ffname = self.entffname.get()
+        if len(ffname) == 0:
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Father First Name must not be empty")
+            winErr.mainloop()
+            return             
         flname = self.entflname.get()
+        if len(flname) == 0:
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Father Last Name must not be empty")
+            winErr.mainloop()
+            return                   
         mfname = self.entmfname.get()
+        if len(mfname) == 0:
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Mother First Name must not be empty")
+            winErr.mainloop()
+            return                   
         mlname = self.entmlname.get()
+        if len(mlname) == 0:
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Mother Last Name must not be empty")
+            winErr.mainloop()
+            return                   
         
         #query city
         regplace = self.SQLController.QueryUserCity(self.currentUser)
@@ -121,21 +149,26 @@ class BirthRegistrationApp(tkinter.Tk):
         address = momData[4] #whatever the address and phone fields are
         phone = momData[5]
         
+        birthData = self.SQLController.QueryBirthsAll(fname,lname)
+        if birthData is not None:
+            winErr = ErrorWindowPopup.ErrorWindowPopup("Error: Birth already exists. First Name, Last Name match found in Births Table.")
+            winErr.mainloop()            
+
         #births(regno, fname, lname, regdate, regplace, gender, f_fname, f_lname, m_fname, m_lname)
         birthErr = self.SQLController.CreateBirth(regno, fname, lname, regdate, regplace, gender, ffname, flname, mfname, mlname)
         if birthErr:
             winErr = ErrorWindowPopup.ErrorWindowPopup("Error: SQL Error in Creating Birth. Please check your inputs are of valid types and do not violate unique ID.")
             winErr.mainloop()
-            return
-        
+            return  
+          
         #create person if not already exists
         personData = self.SQLController.QueryPersonsAll(fname,lname)
         if personData is None:
             createPersonErr = self.SQLController.CreatePerson(fname, lname, bdate, bplace, address, phone)
             if createPersonErr: 
-                winErr = ErrorWindowPopup.ErrorWindowPopup("Error: SQL Error in Creating Person. Please ensure that at First Name and Last Name are and unique.")
+                winErr = ErrorWindowPopup.ErrorWindowPopup("Notice: SQL Error in Creating Person after birth registration.")
                 winErr.mainloop()
-                return
+                #this is ok since birth was still created successfully
         
         self.SQLController.CommitAndClose()
         self.destroy()
@@ -148,4 +181,19 @@ class BirthRegistrationApp(tkinter.Tk):
         self.SQLController.CommitAndClose()
         self.destroy()
         winReg = RegistryAgentApp.RegistryAgentApp(self.database,self.currentUser)
-        winReg.mainloop()        
+        winReg.mainloop()    
+        
+    def checkDate(self,date):
+        try:
+            datetime.strptime(str(date), '%Y-%m-%d')
+        except ValueError:
+            return False
+        else:
+            return True    
+        
+    def isValidEntryGender(self, gender):
+        validEntryList = ['m','f','M','F']
+        if gender in validEntryList:
+            return True
+        else:
+            return False
