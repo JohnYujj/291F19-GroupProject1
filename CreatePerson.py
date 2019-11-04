@@ -3,6 +3,7 @@ from tkinter import *
 import SQLControlClass
 import RegistryAgentApp
 import ErrorWindowPopup
+from datetime import datetime
 
 class CreatePersonApp(tkinter.Tk):
     #should pass the uid when creating registryAgentApp to determine who is currently logged in
