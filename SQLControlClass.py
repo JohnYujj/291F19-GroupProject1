@@ -197,7 +197,7 @@ class SQLController:
         return self.cursor.fetchall()
     
     def MarriageReg(self,regno,regdate,regplace,fname1,lname1,fname2,lname2):
-        self.cursor.execute('INSERT INTO marriages VALUES(:regno,:regdate,:regplace,:fname1,:lname1,:fname2,:lname2',{'regno':regno,'regdate':regdate,'regplace':regplace,'fname1':fname1,'lname1':lname1,'fname2':fname2,'lanem2':lname2})
+        self.cursor.execute('INSERT INTO marriages VALUES(:regno,:regdate,:regplace,:fname1,:lname1,:fname2,:lname2)',{'regno':regno,'regdate':regdate,'regplace':regplace,'fname1':fname1,'lname1':lname1,'fname2':fname2,'lname2':lname2})
         self.connection.commit()
     
     def CheckUniqueMarriageRegno(self,regno):
